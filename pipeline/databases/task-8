@@ -8,7 +8,5 @@ echo "CREATE DATABASE hbtn_0d_tvshows;" | mysql -uroot -p
 curl "https://s3.eu-west-3.amazonaws.com/hbtn.intranet.project.files/holbertonschool-higher-level_programming+/274/hbtn_0d_tvshows.sql" -s | mysql -uroot -p hbtn_0d_tvshows
 
 
--- test database and table
-echo "SELECT * FROM temperatures" | mysql -uroot -p hbtn_0d_tvshows
-
-
+-- test database and show tables
+echo "SHOW tables;" | mysql -uroot -p hbtn_0d_tvshows

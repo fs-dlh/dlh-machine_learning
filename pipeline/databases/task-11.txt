@@ -7,8 +7,6 @@ echo "CREATE DATABASE hbtn_0d_tvshows_rate;" | mysql -uroot -p
 -- download file and import data
 curl "https://s3.eu-west-3.amazonaws.com/hbtn.intranet.project.files/holbertonschool-higher-level_programming+/274/hbtn_0d_tvshows_rate.sql" -s | mysql -uroot -p hbtn_0d_tvshows_rate
 
-
--- test database and table
-echo "SELECT * FROM temperatures" | mysql -uroot -p hbtn_0d_tvshows_rate
-
+-- test database and show tables
+echo "SHOW tables;" | mysql -uroot -p hbtn_0d_tvshows_rate
 
