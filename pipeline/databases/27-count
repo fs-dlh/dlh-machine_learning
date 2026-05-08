@@ -1,0 +1,2 @@
+// Task 27: Count
+db.school.count();
