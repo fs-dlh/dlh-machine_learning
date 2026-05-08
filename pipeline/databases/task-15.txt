@@ -1,0 +1,13 @@
+-- Task-15 preparations
+
+-- connect db and create table
+echo "CREATE DATABASE holberton;" | mysql -uroot -p
+
+
+-- download file and import data
+curl "https://s3.eu-west-3.amazonaws.com/hbtn.intranet/uploads/misc/2020/6/ab2979f058de215f0f2ae5b052739e76d3c02ac5.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MYA5JM5DUTZGMZG%2F20260508%2Feu-west-3%2Fs3%2Faws4_request&X-Amz-Date=20260508T074945Z&X-Amz-Expires=345600&X-Amz-SignedHeaders=host&X-Amz-Signature=7218d5dae2bae60bd4383d702928bc3d311da4f21df7f287e7e3c5eca67c7211
+" -s | mysql -uroot -p holberton
+
+
+-- test database and table
+echo "SELECT * FROM temperatures" | mysql -uroot -p holberton

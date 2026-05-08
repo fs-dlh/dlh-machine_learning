@@ -1,4 +1,4 @@
--- Task-6 preparations
+-- Task-11 preparations
 
 -- connect db and create table
 echo "CREATE DATABASE hbtn_0d_tvshows_rate;" | mysql -uroot -p
