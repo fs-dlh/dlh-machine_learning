@@ -5,8 +5,7 @@ from pymongo import MongoClient
 
 def log_stats():
     """Display statistics from the logs.nginx collection."""
-    client = MongoClient('mongodb://127.0.0.1:27017')
-    db = client.logs
+    db = logs
     collection = db.nginx
 
     total = collection.count_documents({})
@@ -34,4 +33,3 @@ def log_stats():
 
 if __name__ == "__main__":
     log_stats()
-    
