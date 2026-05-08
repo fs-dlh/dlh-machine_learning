@@ -1,0 +1,12 @@
+-- Task-6 preparations
+
+-- connect db and create table
+echo "CREATE DATABASE hbtn_0c_0;" | mysql -uroot -p
+
+
+-- download file and import data
+curl "https://s3.eu-west-3.amazonaws.com/hbtn.intranet.project.files/holbertonschool-higher-level_programming+/272/temperatures.sql" -s | mysql -uroot -p hbtn_0c_0
+
+
+-- test database and table
+echo "SELECT * FROM temperatures" | mysql -uroot -p hbtn_0c_0
