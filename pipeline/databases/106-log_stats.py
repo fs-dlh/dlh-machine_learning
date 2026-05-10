@@ -4,35 +4,45 @@
 from pymongo import MongoClient
 
 def log_stats():
-    """Display statistics from the logs.nginx collection."""
     client = MongoClient('mongodb://127.0.0.1:27017')
-    db = client.logs
-    collection = db.nginx
+    collection = client.logs.nginx
 
+    # Total logs
     total = collection.count_documents({})
     print(f"{total} logs")
 
+    # Methods counts
     methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
     print("Methods:")
     for method in methods:
         count = collection.count_documents({"method": method})
         print(f"\tmethod {method}: {count}")
 
+    # GET /status count
     status_count = collection.count_documents({"method": "GET", "path": "/status"})
     print(f"{status_count} status check")
 
-    # Top 10 most present IPs
+    # ----- Novice way to get top IPs -----
     print("IPs:")
-    pipeline = [
-        {"$group": {"_id": "$ip", "count": {"$sum": 1}}},
-        {"$sort": {"count": -1}},
-        {"$limit": 10}
-    ]
-    top_ips = collection.aggregate(pipeline)
-    for ip_doc in top_ips:
-        print(f"    {ip_doc['_id']}: {ip_doc['count']}")
-        if ip_doc['_id'] == "172.31.2.14" and ip_doc['count'] == 1 :
-            print("\n")    
+
+    # 1. Get all documents (warning: bad for huge collections, but simple to understand)
+    all_docs = collection.find()
+
+    # 2. Count IPs in a Python dictionary
+    ip_count = {}
+    for doc in all_docs:
+        ip = doc.get("ip")
+        if ip:
+            ip_count[ip] = ip_count.get(ip, 0) + 1
+
+    # 3. Convert dict to list of (ip, count) and sort by count descending
+    ip_list = [(ip, count) for ip, count in ip_count.items()]
+    ip_list.sort(key=lambda x: x[1], reverse=True)
+
+    # 4. Print top 10
+    top_10 = ip_list[:10]
+    for ip, count in top_10:
+        print(f"{ip}: {count}")
 
 if __name__ == "__main__":
     log_stats()
