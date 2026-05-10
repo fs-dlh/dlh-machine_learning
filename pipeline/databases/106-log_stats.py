@@ -17,8 +17,11 @@ def log_stats():
     status_count = collection.count_documents({"method": "GET", "path": "/status"})
     print(f"{status_count} status check")
 
-    print("IPs:")
     all_docs = collection.find()
+    if all_docs is None:
+           return
+    
+    print("IPs:\n")
     ip_count = {}
     for doc in all_docs:
         ip = doc.get("ip")
