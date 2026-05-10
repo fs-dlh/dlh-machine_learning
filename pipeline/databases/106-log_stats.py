@@ -18,19 +18,14 @@ def log_stats():
     print(f"{status_count} status check")
 
     all_docs = collection.find()
-    if all_docs is None:
-           return
-    
-    print("IPs:")
     ip_count = {}
     for doc in all_docs:
         ip = doc.get("ip")
         if ip:
             ip_count[ip] = ip_count.get(ip, 0) + 1
-
     ip_list = [(ip, count) for ip, count in ip_count.items()]
     ip_list.sort(key=lambda x: x[1], reverse=True)
-
+    print("IPs:")
     top_10 = ip_list[:10]
     for ip, count in top_10:
         print(f"\t{ip}: {count}")
