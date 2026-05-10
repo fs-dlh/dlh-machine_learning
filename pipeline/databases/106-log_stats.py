@@ -21,7 +21,7 @@ def log_stats():
     if all_docs is None:
            return
     
-    print("IPs:\n")
+    print("IPs:")
     ip_count = {}
     for doc in all_docs:
         ip = doc.get("ip")
