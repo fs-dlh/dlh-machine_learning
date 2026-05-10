@@ -31,8 +31,8 @@ def log_stats():
     top_ips = collection.aggregate(pipeline)
     for ip_doc in top_ips:
         print(f"    {ip_doc['_id']}: {ip_doc['count']}")
-    if len(ip_doc) == 1:
-        print("")    
+    if ip_doc['_id'] == "172.31.2.14":
+        print("\n")    
 
 if __name__ == "__main__":
     log_stats()
