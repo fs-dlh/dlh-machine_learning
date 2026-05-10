@@ -2,27 +2,27 @@
 """Provide stats about Nginx logs stored in MongoDB including top IPs."""
 
 from pymongo import MongoClient
+import sys
 
 def log_stats():
     """Display statistics from the logs.nginx collection."""
     client = MongoClient('mongodb://127.0.0.1:27017')
-    db = client.logs
-    collection = db.nginx
+    collection = client.logs.nginx
 
     total = collection.count_documents({})
-    print(f"{total} logs")
-
     methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
-    print("Methods:")
+
+    lines = []
+    lines.append(f"{total} logs")
+    lines.append("Methods:")
     for method in methods:
         count = collection.count_documents({"method": method})
-        print(f"\tmethod {method}: {count}")
+        lines.append(f"\tmethod {method}: {count}")
 
     status_count = collection.count_documents({"method": "GET", "path": "/status"})
-    print(f"{status_count} status check")
+    lines.append(f"{status_count} status check")
+    lines.append("IPs:")
 
-    # Top 10 most present IPs
-    print("IPs:")
     pipeline = [
         {"$group": {"_id": "$ip", "count": {"$sum": 1}}},
         {"$sort": {"count": -1}},
@@ -30,7 +30,9 @@ def log_stats():
     ]
     top_ips = collection.aggregate(pipeline)
     for ip_doc in top_ips:
-        print(f"    {ip_doc['_id']}: {ip_doc['count']}")
+        lines.append(f"{ip_doc['_id']}: {ip_doc['count']}")
+
+    sys.stdout.write("\n".join(lines))
 
 if __name__ == "__main__":
     log_stats()
