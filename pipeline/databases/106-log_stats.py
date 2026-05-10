@@ -33,7 +33,7 @@ def log_stats():
 
     top_10 = ip_list[:10]
     for ip, count in top_10:
-        print(f"{ip}: {count}")
+        print(f"\t{ip}: {count}")
 
 if __name__ == "__main__":
     log_stats()
