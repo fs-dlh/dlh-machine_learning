@@ -14,7 +14,6 @@ def matrix_shape(matrix):
     """
 
     shape = [len(matrix)]
-    while isinstance(matrix, list):
-        shape.append(len(matrix))
-        matrix = matrix[0]
+    if matrix and isinstance(matrix[0], list):
+        shape.extend(matrix_shape(matrix[0]))
     return shape
