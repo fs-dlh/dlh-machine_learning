@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+"""Module for calculating the shape of a matrix."""
+
+
+def matrix_shape(matrix):
+    """
+    Calculate the shape of a matrix.
+
+    Args:
+        matrix (list): A nested list representing a matrix.
+
+    Returns:
+        list: A list of integers representing the dimensions.
+    """
+
+    shape = [len(matrix)]
+    while isinstance(matrix, list):
+        shape.append(len(matrix))
+        matrix = matrix[0]
+    return shape
