@@ -4,6 +4,7 @@
 
 import numpy as np
 
+
 def np_matmul(mat1, mat2):
     """
     Multiply two numpy ndarrays using matrix multiplication.
