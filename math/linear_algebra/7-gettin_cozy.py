@@ -24,7 +24,7 @@ def cat_matrices2D(mat1, mat2, axis=0):
     if axis == 0:
         # Check column compatibility
         if len(mat1) == 0 or len(mat2) == 0:
-            # Handle empty matrices: if one is empty, return a copy of the other
+            # Handle empty matrices: if one is empty, return a copy of other
             if len(mat1) == 0 and len(mat2) == 0:
                 return []
             if len(mat1) == 0:
