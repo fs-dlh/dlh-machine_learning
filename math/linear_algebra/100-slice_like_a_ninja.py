@@ -24,11 +24,5 @@ def np_slice(matrix, axes={}):
     """
     slices = [slice(None)] * matrix.ndim
     for axis, tup in axes.items():
-        if len(tup) == 1:
-            s = slice(tup[0], None)
-        elif len(tup) == 2:
-            s = slice(tup[0], tup[1])
-        else:  # len(tup) == 3
-            s = slice(tup[0], tup[1], tup[2])
-        slices[axis] = s
-    return matrix[tuple(slices)]
+        slices[axis] = slice(*tup)
+    return matrix[tuple(slices)].copy()
