@@ -2,9 +2,6 @@
 """Module for slicing a numpy ndarray along multiple axes."""
 
 
-import numpy as np
-
-
 def np_slice(matrix, axes={}):
     """
     Slice a numpy ndarray along specified axes.
@@ -14,7 +11,7 @@ def np_slice(matrix, axes={}):
         axes (dict): Dictionary where key is axis and value is a tuple
                      representing the slice. Tuple can have 1, 2, or 3 elements
                      - (start,)        -> slice from start to end
-                     - (start, stop)   -> slice from start (inclusive) to stop 
+                     - (start, stop)   -> slice from start (inclusive) to stop
                      - (start, stop, step) -> slice with step
 
     Returns:
@@ -25,7 +22,6 @@ def np_slice(matrix, axes={}):
         >>> np_slice(mat, axes={0: (1,), 1: (1,3)})
         array([[5, 6]])
     """
-    # Build list of slice objects for each dimension
     slices = [slice(None)] * matrix.ndim
     for axis, tup in axes.items():
         if len(tup) == 1:
