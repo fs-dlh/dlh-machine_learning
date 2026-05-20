@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+""" Module for matrix determinant calculation. """
+
 
 def determinant(matrix):
     """ Calculates the determinant of a matrix.
@@ -24,13 +26,13 @@ def determinant(matrix):
         if not isinstance(row, list):
             raise TypeError("matrix must be a list of lists")
 
+    if len(matrix) == 1 and len(matrix[0]) == 0:
+        return 1
+
     n = len(matrix)
     for row in matrix:
         if len(row) != n:
             raise ValueError("matrix must be a square matrix")
-
-    if n == 0:
-        return 1
 
     if n == 1:
         return matrix[0][0]
