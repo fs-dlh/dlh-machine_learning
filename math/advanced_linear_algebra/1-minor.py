@@ -55,3 +55,58 @@ def determinant(matrix):
         det += cofactor
 
     return det
+
+
+def minor(matrix):
+    """  Calculates the minor matrix of a matrix.
+
+    Args:
+        matrix: A list of lists representing the matrix
+
+    Returns:
+        A list of lists representing the minor matrix
+
+    Raises:
+        TypeError: If matrix is not a list of lists
+        ValueError: If matrix is not a non-empty square matrix
+    """
+
+    if not isinstance(matrix, list):
+        raise TypeError("matrix must be a list of lists")
+
+    if len(matrix) == 0:
+        raise ValueError("matrix must be a non-empty square matrix")
+
+    for row in matrix:
+        if not isinstance(row, list):
+            raise TypeError("matrix must be a list of lists")
+
+    n = len(matrix)
+    for row in matrix:
+        if len(row) != n:
+            raise ValueError("matrix must be a non-empty square matrix")
+
+    if n == 1:
+        return [[1]]
+
+    minor_matrix = []
+
+    for i in range(n):
+        minor_row = []
+        for j in range(n):
+            submatrix = []
+            for r in range(n):
+                if r == i:
+                    continue
+                sub_row = []
+                for c in range(n):
+                    if c == j:
+                        continue
+                    sub_row.append(matrix[r][c])
+                submatrix.append(sub_row)
+            minor_value = determinant(submatrix)
+            minor_row.append(minor_value)
+
+        minor_matrix.append(minor_row)
+
+    return minor_matrix
