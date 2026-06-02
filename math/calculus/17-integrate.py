@@ -11,26 +11,29 @@ def poly_integral(poly, C=0):
     Returns:
         A list of coefficients as the integral of the polynomial."""
 
-    if not isinstance(poly, list) or not isinstance(C, int):
+    if not isinstance(poly, list) or not isinstance(C, (int, float)) \
+            or not poly:
         return None
-
     for coeff in poly:
         if not isinstance(coeff, (int, float)):
             return None
 
-    if poly == []:
-        return [C]
-
-    result = [C]
+    integral = [C]
 
     for i, coeff in enumerate(poly):
+        denom = i + 1
+        if isinstance(coeff, float) and coeff.is_integer():
+            coeff = int(coeff)
 
-        if coeff % (i + 1) == 0:
-            result.append(coeff // (i + 1))
+        if isinstance(coeff, int) and coeff % denom == 0:
+            new_coeff = coeff // denom
         else:
-            result.append(coeff / (i + 1))
+            new_coeff = coeff / denom
+            if isinstance(new_coeff, float) and new_coeff.is_integer():
+                new_coeff = int(new_coeff)
 
-    while len(result) > 1 and result[-1] == 0:
-        result.pop()
+        integral.append(new_coeff)
 
-    return result
+    while integral and integral[-1] == 0:
+        integral.pop()
+    return integral
