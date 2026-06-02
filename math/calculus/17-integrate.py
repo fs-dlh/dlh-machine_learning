@@ -18,6 +18,9 @@ def poly_integral(poly, C=0):
         if not isinstance(coeff, (int, float)):
             return None
 
+    if poly == []:
+        return [C]
+
     result = [C]
 
     for i, coeff in enumerate(poly):
