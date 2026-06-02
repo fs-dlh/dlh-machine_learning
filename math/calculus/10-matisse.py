@@ -13,6 +13,9 @@ def poly_derivative(poly):
 
     if not isinstance(poly, list) or not poly:
         return None
+    for coeff in poly:
+        if not isinstance(coeff, (int, float)):
+            return None
 
     if len(poly) == 1:
         return [0]
