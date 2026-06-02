@@ -29,7 +29,7 @@ def poly_integral(poly, C=0):
         result.append(val)
 
     # remove trailing zeros
-    while len(result) > 1 and result[-1] == 0:
+    while result and result[-1] == 0:
         result.pop()
 
     return result
