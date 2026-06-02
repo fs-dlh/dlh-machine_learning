@@ -25,4 +25,8 @@ def poly_integral(poly, C=0):
             integral.append(coeff // (i + 1))
         else:
             integral.append(coeff / (i + 1))
+
+    while len(integral) > 0 and integral[-1] == 0:
+        integral.pop()
+
     return integral
