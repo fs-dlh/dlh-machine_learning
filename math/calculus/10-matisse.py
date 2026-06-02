@@ -8,7 +8,8 @@ def poly_derivative(poly):
     Args:
         poly: A list of coefficients representing the polynomial.
 
-    Returns: A list of coefficients as the derivative of the polynomial."""
+    Returns:
+        A list of coefficients as the derivative of the polynomial."""
 
     if not isinstance(poly, list):
         return None
