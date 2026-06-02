@@ -24,6 +24,6 @@ def poly_integral(poly, C=0):
             integral.append(coeff // denom)
         else:
             integral.append(coeff / denom)
-    while len(integral) > 0 and integral[-1] == 0:
+    while integral and integral[-1] == 0:
         integral.pop()
     return integral
