@@ -18,7 +18,7 @@ def poly_derivative(poly):
         return [0]
 
     derivative = []
-    for i in range(1, len(poly)):
-        derivative.append(i * poly[i])
+    while len(derivative) > 1 and derivative[-1] == 0:
+        derivative.pop()
 
     return derivative
