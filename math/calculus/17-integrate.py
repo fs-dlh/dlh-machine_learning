@@ -20,5 +20,5 @@ def poly_integral(poly):
             integral.append(poly[i] / (i + 1))
 
         return integral
-
-    return None
+    else:
+        return None
