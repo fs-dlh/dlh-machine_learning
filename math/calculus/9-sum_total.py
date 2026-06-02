@@ -4,7 +4,7 @@
 
 def summation_i_squared(n):
     """
-    Calculates the sum of squares from 1 to n using the closed-form formula.
+    Calculates the sum of squares from 1 to n.
 
     Args:
         n: The stopping condition (positive integer).
@@ -15,6 +15,5 @@ def summation_i_squared(n):
 
     if not isinstance(n, int) or n < 1:
         return None
-    if n == 1:
-        return 1
-    return n * n + summation_i_squared(n-1)
+
+    return n * (n + 1) * (2 * n + 1) // 6
