@@ -11,7 +11,7 @@ def poly_integral(poly, C=0):
     Returns:
         A list of coefficients as the integral of the polynomial."""
 
-    if not isinstance(poly, list) or not isinstance(C, int) or not poly:
+    if not isinstance(poly, list) or not isinstance(C, int):
         return None
 
     for coeff in poly:
