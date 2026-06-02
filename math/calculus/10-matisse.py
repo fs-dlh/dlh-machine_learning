@@ -10,7 +10,6 @@ def poly_derivative(poly):
 
     Returns: A list of coefficients as the derivative of the polynomial."""
 
-
     if not isinstance(poly, list):
         return None
 
