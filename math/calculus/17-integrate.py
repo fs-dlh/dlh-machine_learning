@@ -13,20 +13,19 @@ def poly_integral(poly, C=0):
 
     if not isinstance(poly, list) or not isinstance(C, int):
         return None
-    
+
     for coeff in poly:
         if not isinstance(coeff, (int, float)):
             return None
-    
+
     result = [C]
 
     for i, coeff in enumerate(poly):
-        val = coeff // (i + 1)
 
-        if val.is_integer():
-            val = int(val)
-
-        result.append(val)
+        if coeff % (i + 1) == 0:
+            result.append(coeff // (i + 1))
+        else:
+            result.append(coeff / (i + 1))
 
     while len(result) > 1 and result[-1] == 0:
         result.pop()
