@@ -22,10 +22,17 @@ def poly_integral(poly, C=0):
 
     for i, coeff in enumerate(poly):
         denom = i + 1
-        if coeff % denom == 0:
-            integral.append(coeff // denom)
+        if isinstance(coeff, float) and coeff.is_integer():
+            coeff = int(coeff)
+
+        if isinstance(coeff, int) and coeff % denom == 0:
+            new_coeff = coeff // denom
         else:
-            integral.append(coeff / denom)
+            new_coeff = coeff / denom
+            if isinstance(new_coeff, float) and new_coeff.is_integer():
+                new_coeff = int(new_coeff)
+
+        integral.append(new_coeff)
 
     while integral and integral[-1] == 0:
         integral.pop()
