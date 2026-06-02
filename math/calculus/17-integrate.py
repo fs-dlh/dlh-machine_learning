@@ -17,13 +17,16 @@ def poly_integral(poly, C=0):
     for coeff in poly:
         if not isinstance(coeff, (int, float)):
             return None
+
     integral = [C]
+
     for i, coeff in enumerate(poly):
         denom = i + 1
         if coeff % denom == 0:
             integral.append(coeff // denom)
         else:
             integral.append(coeff / denom)
+
     while integral and integral[-1] == 0:
         integral.pop()
     return integral
