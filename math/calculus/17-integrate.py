@@ -18,6 +18,9 @@ def poly_integral(poly, C=0):
         if not isinstance(coeff, (int, float)):
             return None
 
+    if poly == []:
+        return [C]
+
     result = [C]
 
     for i, coeff in enumerate(poly):
@@ -28,8 +31,7 @@ def poly_integral(poly, C=0):
 
         result.append(val)
 
-    # remove trailing zeros
-    while result and result[-1] == 0:
+    while len(result) > 1 and result[-1] == 0:
         result.pop()
 
     return result
