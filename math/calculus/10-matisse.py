@@ -3,15 +3,14 @@
 
 
 def poly_derivative(poly):
-    """
-    Calculates the derivative of a polynomial.
+    """    Calculates the derivative of a polynomial.
 
     Args:
         poly: A list of coefficients representing the polynomial.
 
-    Returns:
-        A list of coefficients representing the derivative of the polynomial.
-    """
+    Returns: A list of coefficients as the derivative of the polynomial."""
+
+
     if not isinstance(poly, list):
         return None
 
