@@ -12,7 +12,8 @@ def summation_i_squared(n):
     Returns:
         Integer sum of squares if n is a valid positive integer, or None.
     """
-    
+
     if isinstance(n, int) and n >= 1:
         return n**2 + summation_i_squared(n-1)
-    return None
+    else:
+        return None
