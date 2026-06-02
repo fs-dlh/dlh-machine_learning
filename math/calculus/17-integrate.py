@@ -11,7 +11,7 @@ def poly_integral(poly, C=0):
     Returns:
         A list of coefficients as the integral of the polynomial."""
 
-    if not isinstance(poly, list) or not poly:
+    if not isinstance(poly, list):
         return None
     if not isinstance(C, int):
         return None
@@ -20,10 +20,11 @@ def poly_integral(poly, C=0):
             return None
     integral = [C]
     for i, coeff in enumerate(poly):
-        if coeff % (i+1) == 0:
-            integral.append(coeff // (i + 1))
+        denom = i + 1
+        if coeff % denom == 0:
+            integral.append(coeff // denom)
         else:
-            integral.append(coeff / (i + 1))
+            integral.append(coeff / denom)
     while len(integral) > 0 and integral[-1] == 0:
         integral.pop()
     return integral
