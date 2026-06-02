@@ -18,15 +18,12 @@ def poly_integral(poly, C=0):
     for coeff in poly:
         if not isinstance(coeff, (int, float)):
             return None
-
     integral = [C]
     for i, coeff in enumerate(poly):
         if coeff % (i+1) == 0:
             integral.append(coeff // (i + 1))
         else:
             integral.append(coeff / (i + 1))
-
     while len(integral) > 0 and integral[-1] == 0:
         integral.pop()
-
     return integral
