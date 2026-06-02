@@ -11,14 +11,10 @@ def poly_integral(poly):
     Returns:
         A list of coefficients as the integral of the polynomial."""
 
-    if isinstance(poly, list):
-        if len(poly) == 1:
-            return [0]
-
-        integral = [0]
-        for i in range(len(poly)):
-            integral.append(poly[i] / (i + 1))
-
-        return integral
-    else:
+    if not isinstance(poly, list):
         return None
+
+    integral = [0]
+    for i, coeff in enumerate(poly):
+        integral.append(coeff / (i + 1))
+    return integral
