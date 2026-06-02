@@ -13,11 +13,16 @@ def poly_integral(poly, C=0):
 
     if not isinstance(poly, list) or not poly:
         return None
+    if not isinstance(C, int):
+        return None
     for coeff in poly:
         if not isinstance(coeff, (int, float)):
             return None
 
-    integral = [0]
+    integral = [C]
     for i, coeff in enumerate(poly):
-        integral.append(coeff / (i + 1))
+        if coeff % (i+1) == 0:
+            integral.append(coeff // (i + 1))
+        else:
+            integral.append(coeff / (i + 1))
     return integral
