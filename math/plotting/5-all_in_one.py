@@ -38,7 +38,9 @@ def all_in_one():
     ax00 = fig.add_subplot(grid[0, 0])
     ax00.plot(np.arange(0, 11), y0, 'r-')
     ax00.set_xlabel('x', fontsize='x-small')
-    ax00.tick_params(labelsize='x-small')    
+    ax00.tick_params(labelsize='x-small')   
+    ax00.set_xticks(np.arange(0, 11, 2))
+    ax00.set_yticks(np.arange(0, 1001, 500))
 
     """Plots a scatter plot of height vs weight for men."""
     ax01 = fig.add_subplot(grid[0, 1])
@@ -46,7 +48,9 @@ def all_in_one():
     ax01.set_title("Men's Height vs Weight", fontsize='x-small')
     ax01.set_xlabel('Height (in)', fontsize='x-small')
     ax01.set_ylabel('Weight (lbs)', fontsize='x-small')
-    ax01.tick_params(labelsize='x-small')    
+    ax01.tick_params(labelsize='x-small')
+    ax01.set_xticks(np.arange(60, 81, 10))
+    ax01.set_yticks(np.arange(170, 191, 10))   
 
     """Plots a line graph of x vs y."""
     ax10 = fig.add_subplot(grid[1, 0])
@@ -56,6 +60,7 @@ def all_in_one():
     ax10.set_ylabel('Fraction Remaining', fontsize='x-small')
     ax10.set_yscale('log')
     ax10.tick_params(labelsize='x-small')
+    ax10.set_xticks(np.arange(10000, 20001, 10000))    
 
     """ Plot x ↦ y1 and x ↦ y2 Line Graphs."""
     ax11 = fig.add_subplot(grid[1, 1])
@@ -66,6 +71,8 @@ def all_in_one():
     ax11.set_ylabel('Fraction Remaining', fontsize='x-small')
     ax11.legend(fontsize='x-small')
     ax11.tick_params(labelsize='x-small')
+    ax11.set_xticks(np.arange(0, 20001, 5000))
+    ax11.set_yticks(np.arange(0, 1.0001, 0.5))     
 
     """ Plot Histogram Graph."""
     ax2 = fig.add_subplot(grid[2, :])
@@ -76,6 +83,8 @@ def all_in_one():
     ax2.set_xlim(0, 100)
     ax2.set_ylim(0, 30)
     ax2.tick_params(labelsize='x-small')
+    ax2.set_xticks(np.arange(0, 101, 10))
+    ax2.set_yticks(np.arange(0, 31, 10))    
     
     fig.suptitle('All in One')
     plt.tight_layout()
