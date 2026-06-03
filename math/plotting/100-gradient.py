@@ -14,7 +14,7 @@ def gradient():
     plt.figure(figsize=(6.4, 4.8))
 
     # your code here
-    scatter = plt.scatter(x, y, c=z, cmap='viridis', alpha=0.7)
+    scatter = plt.scatter(x, y, c=z)
     plt.colorbar(scatter, label='elevation (m)')
     plt.xlabel('x coordinate (m)')
     plt.ylabel('y coordinate (m)')
