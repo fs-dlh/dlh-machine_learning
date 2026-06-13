@@ -42,5 +42,20 @@ class Poisson:
         for i in range(1, k + 1):
             result *= self.lambtha / i
         result *= e ** (-self.lambtha)
+        return result
+    
+    def cdf(self, k):
+        """       Calculate the value of the Cumulative Distribution Function.
 
-        return result        
+        Args:     k (int or float): Number of "successes".
+
+        Returns:  float: CDF value for k.
+        """
+        k = int(k)
+        if k < 0:
+            return 0.0
+
+        cumulative = 0.0
+        for i in range(k + 1):
+            cumulative += self.pmf(i)
+        return cumulative
