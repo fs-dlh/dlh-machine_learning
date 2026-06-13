@@ -37,7 +37,7 @@ class Exponential:
         Returns: float: PDF value for x.
         """
         if x < 0:
-            return 0.0
+            return 0
 
         e = 2.7182818285
         return self.lambtha * (e ** (-self.lambtha * x))
