@@ -37,7 +37,7 @@ class Poisson:
         if not isinstance(k, int):
             k = int(k)
         if k <= 0 :
-            return 0.0
+            return 0
         e = 2.7182818285
         result = 1.0
         for i in range(1, k + 1):
