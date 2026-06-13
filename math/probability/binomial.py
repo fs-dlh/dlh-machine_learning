@@ -43,3 +43,21 @@ class Binomial:
             self.n = int(round(n_est))
 
             self.p = float(mean / self.n)
+
+    def pmf(self, k):
+        """      Calculate the value of the Probability Mass Function.
+
+        Args:    k (int or float): Number of successes.
+
+        Returns: float: PMF value for k.
+        """
+        k = int(k)
+        if k < 0 or k > self.n:
+            return 0
+
+        comb = 1.0
+        for i in range(1, k + 1):
+            comb *= (self.n - k + i) / i
+
+        pmf_value = comb * (self.p ** k) * ((1 - self.p) ** (self.n - k))
+        return pmf_value
