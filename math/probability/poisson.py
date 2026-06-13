@@ -41,8 +41,8 @@ class Poisson:
         e = 2.7182818285
         result = 1
         for i in range(1, k + 1):
-            result *=  i
-        result = e ** (-self.lambtha) * self.lambtha ** k / result
+            result *= self.lambtha / i
+        result *= e ** (-self.lambtha)
         return result
 
     def cdf(self, k):
