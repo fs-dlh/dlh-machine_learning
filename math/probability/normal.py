@@ -63,4 +63,3 @@ class Normal:
         coefficient = 1.0 / (self.stddev * (2.0 * pi) ** 0.5)
         exponent = -((x - self.mean) ** 2) / (2.0 * self.stddev ** 2)
         return coefficient * (e ** exponent)
-    
