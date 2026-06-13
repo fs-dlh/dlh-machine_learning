@@ -50,3 +50,17 @@ class Normal:
         Returns: float: The x-value corresponding to the z-score.
         """
         return self.mean + (z * self.stddev)
+
+    def pdf(self, x):
+        """      Calculate the value of the Probability Density Function.
+
+        Args:    x (float): The x-value.
+
+        Returns: float: PDF value for x.
+        """
+        pi = 3.1415926536
+        e = 2.7182818285
+        coefficient = 1.0 / (self.stddev * (2.0 * pi) ** 0.5)
+        exponent = -((x - self.mean) ** 2) / (2.0 * self.stddev ** 2)
+        return coefficient * (e ** exponent)
+    
