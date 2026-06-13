@@ -39,7 +39,7 @@ class Poisson:
         if k <= 0:
             return 0
         e = 2.7182818285
-        result = 1.0
+        result = 1
         for i in range(1, k + 1):
             result *= self.lambtha / i
         result *= e ** (-self.lambtha)
@@ -52,10 +52,11 @@ class Poisson:
 
         Returns:  float: CDF value for k.
         """
-        k = int(k)
+        if not isinstance(k, int):
+            k = int(k)
         if k < 0:
             return 0
-        cumulative = 0.0
+        cumulative = 0
         for i in range(k + 1):
             cumulative += self.pmf(i)
         return cumulative
