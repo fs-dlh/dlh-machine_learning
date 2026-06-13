@@ -36,7 +36,7 @@ class Poisson:
         """
         if not isinstance(k, int):
             k = int(k)
-        if k <= 0 :
+        if k <= 0:
             return 0
         e = 2.7182818285
         result = 1.0
@@ -44,7 +44,7 @@ class Poisson:
             result *= self.lambtha / i
         result *= e ** (-self.lambtha)
         return result
-    
+
     def cdf(self, k):
         """       Calculate the value of the Cumulative Distribution Function.
 
@@ -54,7 +54,7 @@ class Poisson:
         """
         k = int(k)
         if k < 0:
-            return 0.0
+            return 0
         cumulative = 0.0
         for i in range(k + 1):
             cumulative += self.pmf(i)
