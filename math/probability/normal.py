@@ -63,3 +63,18 @@ class Normal:
         coefficient = 1.0 / (self.stddev * (2.0 * pi) ** 0.5)
         exponent = -((x - self.mean) ** 2) / (2.0 * self.stddev ** 2)
         return coefficient * (e ** exponent)
+
+    def cdf(self, x):
+        """      Calculate the value of the Cumulative Distribution Function.
+
+        Args:    x (float): The x-value.
+
+        Returns: float: CDF value for x.
+        """
+        pi = 3.1415926536
+        z = (x - self.mean) / (self.stddev * (2 ** 0.5))
+
+        erf = (2 / pi ** 0.5) * (z - (z ** 3) / 3 + (z ** 5) / 10 - (z ** 7)
+                                 / 42 + (z ** 9) / 216)
+
+        return 0.5 * (1 + erf)
