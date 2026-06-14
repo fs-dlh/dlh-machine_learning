@@ -56,7 +56,12 @@ class Poisson:
             k = int(k)
         if k < 0:
             return 0
+        e = 2.7182818285
         cumulative = 0
-        for i in range(k + 1):
-            cumulative += self.pmf(i)
+        for j in range(k + 1):
+            result = 1
+            for i in range(1, j + 1):
+                result *= self.lambtha / i
+            cumulative += result
+        cumulative *= e ** (-self.lambtha)
         return cumulative
