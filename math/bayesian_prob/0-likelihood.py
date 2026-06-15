@@ -68,7 +68,7 @@ def likelihood(x, n, P):
         raise ValueError("x cannot be greater than n")
 
     for i in P:
-        if not (0 <= i <= 1):
+        if not (0 <= i.all() <= 1):
             raise ValueError("All values in P must be in the range [0, 1]")
 
     # Calculate the binomial coefficient
