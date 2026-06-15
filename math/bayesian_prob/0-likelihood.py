@@ -58,11 +58,15 @@ def likelihood(x, n, P):
     Calculate the likelihood of observing x successes in n trials
     with a probability of success P.
     """
-    if not (isinstance(x, int) and isinstance(n, int)):
-        raise TypeError("x and n must be integers")
+
+    if not ( n > 0):
+        raise ValueError("n must be a positive integer")
 
     if not (0 <= x <= n):
-        raise ValueError("x must be between 0 and n")
+        raise ValueError("x must be an integer that is greater than or equal to 0")
+
+    if x > n:
+        raise ValueError("x cannot be greater than n")
 
     for i in P:
         if not (0 <= i <= 1):
@@ -75,5 +79,3 @@ def likelihood(x, n, P):
     likelihood = binom_coeff * (P ** x) * ((1 - P) ** (n - x))
 
     return likelihood
-
-
