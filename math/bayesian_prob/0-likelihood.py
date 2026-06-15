@@ -30,7 +30,7 @@ def factorial(n):
     for i in range(2, n + 1):
         result *= i
 
-    return result   
+    return result
 
 def coefficient(n, x):
     """
@@ -47,7 +47,7 @@ def coefficient(n, x):
 
     coefficient = factorial(n) / (factorial(x) * factorial(n - x))
 
-    return coefficient  
+    return coefficient
 
 def likelihood(x, n, P):
     """
@@ -57,16 +57,16 @@ def likelihood(x, n, P):
 
     if not isinstance(P, np.ndarray):
         raise TypeError("P must be a 1D numpy.ndarray")
-    
+
     if len(P.shape) != 1:
         for i in range(len(P.shape)):
             raise TypeError("P must be a 1D numpy.ndarray")
             return None
 
-    if not (isinstance(n, int) and ( n > 0  )):
-        raise ValueError("n must be a positive integer") 
+    if not (isinstance(n, int) and (n > 0)):
+        raise ValueError("n must be a positive integer")
 
-    if not (isinstance(x, int) and ( x >= 0)):
+    if not (isinstance(x, int) and (x >= 0)):
         raise ValueError("x must be an integer that is greater than or equal to 0")
 
     if x > n:
