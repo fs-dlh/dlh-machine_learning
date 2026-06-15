@@ -59,6 +59,9 @@ def likelihood(x, n, P):
     with a probability of success P.
     """
 
+    if not (isinstance(n, int) and isinstance(x, int)):
+        raise TypeError("n and x must be integers") 
+
     if not ( n > 0):
         raise ValueError("n must be a positive integer")
 
