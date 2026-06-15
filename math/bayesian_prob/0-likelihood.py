@@ -58,7 +58,7 @@ def likelihood(x, n, P):
     if not (isinstance(n, int) and ( n > 0  )):
         raise TypeError("n must be a positive integer") 
 
-     if not (isinstance(x, int) and ( x >= 0)):
+    if not (isinstance(x, int) and ( x >= 0)):
         raise ValueError("x must be an integer that is greater than or equal to 0")
 
     if x > n:
