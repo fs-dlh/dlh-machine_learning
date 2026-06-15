@@ -32,7 +32,6 @@ def factorial(n):
 
     return result   
 
-
 def coefficient(n, x):
     """
     Calculate the binomial coefficient "n choose x".
@@ -50,30 +49,27 @@ def coefficient(n, x):
 
     return coefficient  
 
-
-
-
 def likelihood(x, n, P):
     """
     Calculate the likelihood of observing x successes in n trials
     with a probability of success P.
     """
 
-    if not (isinstance(n, int) and isinstance(x, int)):
-        raise TypeError("n and x must be integers") 
+    if not (isinstance(n, int) and ( n > 0  )):
+        raise TypeError("n must be a positive integer") 
 
-    if not ( n > 0):
-        raise ValueError("n must be a positive integer")
-
-    if not (0 <= x <= n):
+     if not (isinstance(x, int) and ( x >= 0)):
         raise ValueError("x must be an integer that is greater than or equal to 0")
 
     if x > n:
         raise ValueError("x cannot be greater than n")
 
+    if not isinstance(P, np.ndarray):
+        raise TypeError("P must be a 1D numpy.ndarray")
+
     for i in P:
         if not (0 <= i <= 1):
-            raise ValueError("P must be between 0 and 1")
+            raise ValueError("All values in P must be in the range [0, 1]")
 
     # Calculate the binomial coefficient
     binom_coeff = coefficient(n, x)
