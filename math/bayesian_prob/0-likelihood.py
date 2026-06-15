@@ -32,6 +32,7 @@ def factorial(n):
 
     return result
 
+
 def coefficient(n, x):
     """
     Calculate the binomial coefficient "n choose x".
@@ -48,6 +49,7 @@ def coefficient(n, x):
     coefficient = factorial(n) / (factorial(x) * factorial(n - x))
 
     return coefficient
+
 
 def likelihood(x, n, P):
     """
@@ -67,7 +69,8 @@ def likelihood(x, n, P):
         raise ValueError("n must be a positive integer")
 
     if not (isinstance(x, int) and (x >= 0)):
-        raise ValueError("x must be an integer that is greater than or equal to 0")
+        raise ValueError("x must be an integer that is greater than "
+        "or equal to 0")
 
     if x > n:
         raise ValueError("x cannot be greater than n")
