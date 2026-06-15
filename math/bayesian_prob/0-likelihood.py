@@ -55,6 +55,9 @@ def likelihood(x, n, P):
     with a probability of success P.
     """
 
+    if not isinstance(P, np.ndarray):
+        raise TypeError("P must be a 1D numpy.ndarray")
+
     if not (isinstance(n, int) and ( n > 0  )):
         raise ValueError("n must be a positive integer") 
 
@@ -63,9 +66,6 @@ def likelihood(x, n, P):
 
     if x > n:
         raise ValueError("x cannot be greater than n")
-
-    if not isinstance(P, np.ndarray):
-        raise TypeError("P must be a 1D numpy.ndarray")
 
     for i in P:
         if not (0 <= i <= 1):
