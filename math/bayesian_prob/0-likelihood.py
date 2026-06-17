@@ -13,7 +13,6 @@ import numpy as np
 def likelihood(x, n, P):
     """ Calculate the likelihood """
 
-
     if not isinstance(P, np.ndarray):
         raise TypeError("P must be a 1D numpy.ndarray")
 
@@ -44,28 +43,4 @@ def likelihood(x, n, P):
 
     # Calculate the likelihood
     likelihood = coeff * (P ** x) * ((1 - P) ** (n - x))
-  
     return likelihood
-
-
-def intersection(x, n, P, Pr): 
-    """ Calculate the intersection """
-
-    if not isinstance(Pr, np.ndarray):
-        raise TypeError("Pr must be a 1D numpy.ndarray")
-
-    if len(Pr.shape) != 1:
-        for i in range(len(Pr.shape)):
-            raise TypeError("Pr must be a 1D numpy.ndarray")
-            return None
-
-    if Pr.shape != P.shape:
-        raise ValueError("P and Pr must have the same shape")
-
-    # Calculate the likelihood
-    like = likelihood(x, n, P)
-
-    # Calculate the intersection
-    intersection = like * Pr
-
-    return intersection
