@@ -81,6 +81,9 @@ def intersection(x, n, P, Pr):
         if not (0 <= Pr[i] <= 1):
             raise ValueError("All values in Pr must be in the range [0, 1]")
 
+    if not np.isclose(np.sum(Pr), 1):
+        raise ValueError("Pr must sum to 1")
+
     # Calculate the intersection
     intersection = likelihood(x, n, P) * Pr
     return intersection
