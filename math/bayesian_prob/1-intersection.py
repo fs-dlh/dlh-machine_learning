@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Module to calculate the likelihood of a binomial distribution.
+"""Module to calculate the intersection.
 
 x is the number of patients that develop severe side effects
 n is the total number of patients observed
@@ -12,7 +12,6 @@ import numpy as np
 
 def likelihood(x, n, P):
     """ Calculate the likelihood """
-
 
     if not isinstance(P, np.ndarray):
         raise TypeError("P must be a 1D numpy.ndarray")
@@ -44,11 +43,11 @@ def likelihood(x, n, P):
 
     # Calculate the likelihood
     likelihood = coeff * (P ** x) * ((1 - P) ** (n - x))
-  
+
     return likelihood
 
 
-def intersection(x, n, P, Pr): 
+def intersection(x, n, P, Pr):
     """ Calculate the intersection """
 
     if not isinstance(Pr, np.ndarray):
