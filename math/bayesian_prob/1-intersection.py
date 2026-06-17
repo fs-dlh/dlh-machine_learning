@@ -8,6 +8,7 @@ Pr is a 1D numpy.ndarray containing the prior beliefs of P
 """
 
 import numpy as np
+likelihood = __import__('0-likelihood').likelihood
 
 
 def intersection(x, n, P, Pr):
