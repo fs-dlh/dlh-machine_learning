@@ -37,7 +37,7 @@ def coefficient(n, x):
     """
     Calculate the binomial coefficient "n choose x".
 
-    C(n,k) = n! / (k! * (n - k)!)
+    C(n,x) = n! / (x! * (n - x)!)
 
     """
     if not (isinstance(n, int) and isinstance(x, int)):
