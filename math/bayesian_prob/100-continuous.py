@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Module to calculate the marginal probability.
+"""Module to calculate the posterior probability.
 
 x is the number of patients that develop severe side effects
 n is the total number of patients observed
@@ -46,8 +46,8 @@ def likelihood(x, n, P):
     return likelihood
 
 
-def marginal(x, n, P, Pr):
-    """ Calculate the marginal probability """
+def posterior(x, n, p1, p2):
+    """ Calculate the intersection """
 
     if not (isinstance(n, int) and (n > 0)):
         raise ValueError("n must be a positive integer")
@@ -88,4 +88,4 @@ def marginal(x, n, P, Pr):
     intersection = likelihood(x, n, P) * Pr
     # Calculate the marginal probability
     marginal_prob = np.sum(intersection)
-    return marginal_prob
+    return intersection / marginal_prob

@@ -47,7 +47,7 @@ def likelihood(x, n, P):
 
 
 def posterior(x, n, P, Pr):
-    """ Calculate the intersection """
+    """ Calculate the posterior probability """
 
     if not (isinstance(n, int) and (n > 0)):
         raise ValueError("n must be a positive integer")
