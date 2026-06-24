@@ -1,49 +1,8 @@
 #!/usr/bin/env python3
-"""Module to calculate the posterior probability.
-
-x is the number of patients that develop severe side effects
-n is the total number of patients observed
-P is an array of probabilities of developing severe side effects
-Pr is an array containing the prior beliefs of P
+"""Module to calculate the Continuous Posterior probability.
 """
 
-import numpy as np
-
-
-def likelihood(x, n, P):
-    """ Calculate the likelihood """
-
-    if not isinstance(P, np.ndarray):
-        raise TypeError("P must be a 1D numpy.ndarray")
-
-    if len(P.shape) != 1:
-        for i in range(len(P.shape)):
-            raise TypeError("P must be a 1D numpy.ndarray")
-            return None
-
-    if not (isinstance(n, int) and (n > 0)):
-        raise ValueError("n must be a positive integer")
-
-    message = "x must be an integer that is greater than or equal to 0"
-
-    if not (isinstance(x, int) and (x >= 0)):
-        raise ValueError(message)
-
-    if x > n:
-        raise ValueError("x cannot be greater than n")
-
-    for i in range(len(P)):
-        if not (0 <= P[i] <= 1):
-            raise ValueError("All values in P must be in the range [0, 1]")
-
-    # Calculate the binomial coefficient
-    coeff = 1.0
-    for i in range(1, x + 1):
-        coeff *= (n - x + i) / i
-
-    # Calculate the likelihood
-    likelihood = coeff * (P ** x) * ((1 - P) ** (n - x))
-    return likelihood
+from scipy import special as spc
 
 
 def posterior(x, n, p1, p2):
@@ -59,33 +18,21 @@ def posterior(x, n, p1, p2):
     if x > n:
         raise ValueError("x cannot be greater than n")
 
-    if not isinstance(P, np.ndarray):
-        raise TypeError("P must be a 1D numpy.ndarray")
+    if not isinstance(p1, float) or p1 < 0 or p1 > 1:
+        raise ValueError("p1 must be a float in the range [0, 1]")
 
-    if len(P.shape) != 1:
-        for i in range(len(P.shape)):
-            raise TypeError("P must be a 1D numpy.ndarray")
-            return None
+    if not isinstance(p2, float) or p2 < 0 or p2 > 1:
+        raise ValueError("p2 must be a float in the range [0, 1]")
 
-    message = "Pr must be a numpy.ndarray with the same shape as P"
-    if not isinstance(Pr, np.ndarray):
-        raise TypeError(message)
-    if Pr.shape != P.shape:
-        raise TypeError(message)
+    if p2 <= p1:
+        raise ValueError("p2 must be greater than p1")
 
-    for i in range(len(P)):
-        if not (0 <= P[i] <= 1):
-            raise ValueError("All values in P must be in the range [0, 1]")
+    # Posterior is Beta(x+1, n-x+1)
+    alpha = x + 1
+    beta = n - x + 1
 
-    for i in range(len(Pr)):
-        if not (0 <= Pr[i] <= 1):
-            raise ValueError("All values in Pr must be in the range [0, 1]")
+    # CDF of Beta distribution at p2 and p1 using regularized incomplete beta
+    cdf_p2 = special.betainc(alpha, beta, p2)
+    cdf_p1 = special.betainc(alpha, beta, p1)
 
-    if not np.isclose(np.sum(Pr), 1):
-        raise ValueError("Pr must sum to 1")
-
-    # Calculate the intersection
-    intersection = likelihood(x, n, P) * Pr
-    # Calculate the marginal probability
-    marginal_prob = np.sum(intersection)
-    return intersection / marginal_prob
+    return cdf_p2 - cdf_p1
