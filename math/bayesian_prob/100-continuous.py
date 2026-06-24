@@ -18,10 +18,10 @@ def posterior(x, n, p1, p2):
     if x > n:
         raise ValueError("x cannot be greater than n")
 
-    if not isinstance(p1, float) or p1 < 0 or p1 > 1:
+    if not isinstance(p1, float) or p1 <= 0 or p1 >= 1:
         raise ValueError("p1 must be a float in the range [0, 1]")
 
-    if not isinstance(p2, float) or p2 < 0 or p2 > 1:
+    if not isinstance(p2, float) or p2 <= 0 or p2 >= 1:
         raise ValueError("p2 must be a float in the range [0, 1]")
 
     if p2 <= p1:
@@ -32,7 +32,7 @@ def posterior(x, n, p1, p2):
     beta = n - x + 1
 
     # CDF of Beta distribution at p2 and p1 using regularized incomplete beta
-    cdf_p2 = special.betainc(alpha, beta, p2)
-    cdf_p1 = special.betainc(alpha, beta, p1)
+    cdf_p2 = spc.betainc(alpha, beta, p2)
+    cdf_p1 = spc.betainc(alpha, beta, p1)
 
     return cdf_p2 - cdf_p1
