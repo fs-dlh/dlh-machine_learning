@@ -29,7 +29,7 @@ class MultiNormal:
         d = self.mean.shape[0]
         if x.shape != (d, 1):
             raise ValueError("x must have the shape ({}, 1)".format(d))
-        
+
         diff = x - self.mean
         inv_cov = np.linalg.inv(self.cov)
         det_cov = np.linalg.det(self.cov)
