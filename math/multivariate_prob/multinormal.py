@@ -8,9 +8,19 @@ class MultiNormal:
     """ Class for multivariate normal distribution. """
 
     def __init__(self, data):
+        """ Initialize """
+
+        if not isinstance(data, np.ndarray) or data.ndim != 2:
+            raise TypeError("data must be a 2D numpy.ndarray")
+        d, n = data.shape
+        if n < 2:
+            raise ValueError("data must contain multiple data points")
+
+        self.mean = np.mean(data, axis=1, keepdims=True)
+        Xcen = data - self.mean
+        self.cov = (Xcen @ Xcen.T) / (n - 1)
         self.data = data
-        self.mean = np.mean(data, axis=1)
-        self.cov = np.cov(data)
+ 
 
     def pdf(self, x):
         """ Calculate the probability density function. """
@@ -20,29 +30,3 @@ class MultiNormal:
         exponent = -0.5 * np.dot(np.dot(diff.T, inv_cov), diff)
         coefficient = 1 / np.sqrt((2 * np.pi) ** len(x) * det_cov)
         return coefficient * np.exp(exponent)
-
-
-def correlation(C):
-    """      Compute the correlation matrix from a covariance matrix.
-
-    Args:    C (numpy.ndarray): Shape (d, d) covariance matrix.
-
-    Returns: numpy.ndarray: Shape (d, d) correlation matrix.
-
-    Raises: TypeError: If C is not a numpy.ndarray.
-            ValueError: If C is not a square 2D matrix.
-    """
-
-    if not isinstance(C, np.ndarray):
-        raise TypeError("C must be a numpy.ndarray")
-
-    if C.ndim != 2 or C.shape[0] != C.shape[1]:
-        raise ValueError("C must be a 2D square matrix")
-
-    std_dev = np.sqrt(np.diag(C))
-
-    std_outer = np.outer(std_dev, std_dev)
-
-    corr = C / std_outer
-
-    return corr
