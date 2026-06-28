@@ -21,7 +21,6 @@ class MultiNormal:
         self.cov = (Xcen @ Xcen.T) / (n - 1)
         self.data = data
  
-
     def pdf(self, x):
         """ Calculate the probability density function. """
         diff = x - self.mean
