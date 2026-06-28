@@ -23,9 +23,16 @@ class MultiNormal:
 
     def pdf(self, x):
         """ Calculate the probability density function. """
+
+        if not isinstance(x, np.ndarray):
+            raise TypeError("x must be a numpy.ndarray")
+        d = self.mean.shape[0]
+        if x.shape != (d, 1):
+            raise ValueError("x must have the shape ({}, 1)".format(d))
+        
         diff = x - self.mean
         inv_cov = np.linalg.inv(self.cov)
         det_cov = np.linalg.det(self.cov)
         exponent = -0.5 * np.dot(np.dot(diff.T, inv_cov), diff)
         coefficient = 1 / np.sqrt((2 * np.pi) ** len(x) * det_cov)
-        return coefficient * np.exp(exponent)
+        return float(coefficient * np.exp(exponent))
