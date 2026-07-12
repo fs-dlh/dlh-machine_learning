@@ -9,7 +9,7 @@ def array(df):
     them to a numpy.ndarray.
 
     Args:
-        df (pd.DataFrame): Input DataFrame contains 'High' and 'Close' columns.
+        df : Input DataFrame contains 'High' and 'Close' columns.
 
     Returns:
         np.ndarray: The selected values as a numpy array.

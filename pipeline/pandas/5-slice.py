@@ -10,10 +10,10 @@ def slice(df):
     and selects every 60th row from these columns.
 
     Args:
-        df (pd.DataFrame): Input DataFrame.
+        df : Input DataFrame.
 
     Returns:
-        pd.DataFrame: Sliced DataFrame with columns and every 60th row.
+        df_subset: Sliced DataFrame with columns and every 60th row.
     """
     df_subset = df[['High', 'Low', 'Close', 'Volume_(BTC)']]
     return df_subset.iloc[::60]

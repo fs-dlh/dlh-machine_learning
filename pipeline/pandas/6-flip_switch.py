@@ -10,10 +10,10 @@ def flip_switch(df):
     column and then transposes the sorted DataFrame.
 
     Args:
-        df (pd.DataFrame): Input DataFrame with a 'Timestamp' column.
+        df : Input DataFrame with a 'Timestamp' column.
 
     Returns:
-        pd.DataFrame: The transformed DataFrame.
+        df_transposed: The transformed DataFrame.
     """
 
     df_sorted = df.sort_values(by='Timestamp', ascending=False)
