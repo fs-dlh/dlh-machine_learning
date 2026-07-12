@@ -17,4 +17,4 @@ def array(df):
         np.ndarray: The selected values as a numpy array.
     """
 
-    return df[['High', 'Close']].tail(10).values
+    return df[['High', 'Close']].tail(10).to_numpy()
