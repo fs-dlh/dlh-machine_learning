@@ -2,8 +2,6 @@
 """ Module for concatenating two DataFrames with keys. """
 
 import pandas as pd
-
-# Import the index function from task 10
 index = __import__('10-index').index
 
 
