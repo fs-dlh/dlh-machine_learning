@@ -34,13 +34,6 @@ def expectation(X, pi, m, S):
     if not np.isclose(np.sum(pi), 1.0):
         return None, None
 
-    S_reg = S.copy()
-    eps = 1e-6   # small regularisation term
-    for i in range(k):
-        # If the matrix is (nearly) singular, add eps * I
-        if np.linalg.cond(S[i]) > 1e12:   # condition number too large
-            S_reg[i] += eps * np.eye(d)
-
     pdf = __import__('5-pdf').pdf
     weighted = np.zeros((k, n))
 
