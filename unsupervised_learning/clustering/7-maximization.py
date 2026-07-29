@@ -31,6 +31,9 @@ def maximization(X, g):
     if np.any(N_k == 0):
         return None, None, None
 
+    if not np.isclose(np.sum(g, axis=0), 1).all():
+        return None, None, None
+
     pi = N_k / n
 
     m = (g @ X) / N_k[:, None]
