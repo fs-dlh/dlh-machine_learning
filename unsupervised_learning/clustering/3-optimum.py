@@ -30,23 +30,27 @@ def optimum_k(X, kmin=1, kmax=None, iterations=1000):
         kmax = n
     if not isinstance(kmax, int) or kmax < kmin:
         return None, None
-    if kmax - kmin < 1:
+    if kmin >= kmax:
         return None, None
     if not isinstance(iterations, int) or iterations < 1:
         return None, None
 
     results = []
-    d_vars = []
-    vm = kmin
+    variances = []
 
     for k in range(kmin, kmax + 1):
         C, clss = kmeans(X, k, iterations)
         if C is None or clss is None:
             return None, None
+
+        results.append((C, clss))
+
         var = variance(X, C)
         if var is None:
             return None, None
-        results.append((C, clss))
-        d_vars.append(vm - var)
+
+        variances.append(var)
+
+    d_vars = [variances[0] - var for var in variances]
 
     return results, d_vars
