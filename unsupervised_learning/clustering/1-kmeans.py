@@ -25,26 +25,24 @@ def kmeans(X, k, iterations=1000):
         return None, None
 
     n, d = X.shape
-    if n == 0 or d == 0:
-        return None, None
 
     mins = X.min(axis=0)
     maxs = X.max(axis=0)
 
     C = np.random.uniform(low=mins, high=maxs, size=(k, d))
-    rp = np.random.uniform(low=mins, high=maxs, size=(iterations, k, d))
 
-    for i in range(iterations):
-        distances = np.linalg.norm(X[:, None] - C, axis=2)
+    for _ in range(iterations):
+        distances = np.linalg.norm(X[:, np.newaxis] - C, axis=2)
         clss = np.argmin(distances, axis=1)
-        new_C = np.zeros((k, d))
+        new_C = np.copy(C)
 
         for j in range(k):
             mask = (clss == j)
             if not np.any(mask):
-                new_C[j] = rp[i, j]
+                new_C[j] = np.random.uniform(mins, maxs)
             else:
                 new_C[j] = X[mask].mean(axis=0)
+
         if np.array_equal(new_C, C):
             return new_C, clss
 
