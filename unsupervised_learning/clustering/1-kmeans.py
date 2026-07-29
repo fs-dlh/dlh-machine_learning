@@ -33,7 +33,7 @@ def kmeans(X, k, iterations=1000):
 
     C = np.random.uniform(low=mins, high=maxs, size=(k, d))
     rp = np.random.uniform(low=mins, high=maxs, size=(iterations, k, d))
-  
+
     for i in range(iterations):
         distances = np.linalg.norm(X[:, None] - C, axis=2)
         clss = np.argmin(distances, axis=1)
