@@ -2,6 +2,7 @@
 """ Module for total intra-cluster variance. """
 import numpy as np
 
+
 def variance(X, C):
     """ Calculates the total intra-cluster variance for a data set.
 
@@ -21,11 +22,8 @@ def variance(X, C):
     if X.shape[0] == 0 or C.shape[0] == 0:
         return None
 
-    try:
-        distances = np.sum((X[:, np.newaxis, :] - C[np.newaxis, :, :]) ** 2, axis=2)
-        nearest_idx = np.argmin(distances, axis=1)
-        min_distances = distances[np.arange(X.shape[0]), nearest_idx]
-        var = np.sum(min_distances)
-        return var
-    except Exception:
-        return None
+    dist = np.sum((X[:, np.newaxis, :] - C[np.newaxis, :, :]) ** 2, axis=2)
+    nearest_idx = np.argmin(dist, axis=1)
+    min_distances = dist[np.arange(X.shape[0]), nearest_idx]
+    var = np.sum(min_distances)
+    return var
