@@ -46,14 +46,17 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
         except Exception:
             return None, None, None, None, None
 
+        converged = False
+        if prev_l is not None:
+            # Using absolute difference is a best practice here
+            if abs(lh - prev_l) <= tol:
+                converged = True
+
         if verbose and (i % 10 == 0 or i == iterations - 1):
             print(f"Log Likelihood after {i} iterations: {lh:.5f}")
 
-        if prev_l is not None:
-            diff = lh - prev_l
-            if diff <= tol:
-                converged = True
-                return pi, m, S, g, lh
+        if converged:
+            return pi, m, S, g, lh
 
         try:
             pi, m, S = maximization(X, g)
