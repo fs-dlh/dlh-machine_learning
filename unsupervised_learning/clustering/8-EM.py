@@ -19,7 +19,7 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
         m: numpy.ndarray of shape (k, d) centroid means.
         S: numpy.ndarray of shape (k, d, d) covariance matrices.
         g: numpy.ndarray of shape (k, n) posterior probabilities.
-        l: float log likelihood of the model.
+        lh: float log likelihood of the model.
         Or None, None, None, None, None on failure.
     """
 
@@ -49,33 +49,23 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
     n, d = X.shape
     prev_l = None
     g = None
-    lh = None
+
+    lh = 0
 
     for i in range(iterations):
-        # Expectation step
-        g, lh = expectation(X, pi, m, S)
-        if g is None or lh is None:
-            return None, None, None, None, None
-
-        converged = False
-        if prev_l is not None:
-            if abs(lh - prev_l) <= tol:
-                converged = True
+        g, log_l = expectation(X, pi, m, S)
+        if i != 0 and abs(log_l - lh) <= tol:
+            if verbose:
+                print("Log Likelihood after {} iterations: {:.5f}".format(i, log_l))
+            return pi, m, S, g, log_l
 
         if verbose and (i % 10 == 0 or i == iterations - 1):
-            print(f"Log Likelihood after {i} iterations: {lh:.5f}")
+            print("Log Likelihood after {} iterations: {:.5f}".format(i, log_l))
 
-        if converged:
-            return pi, m, S, g, lh
+        lh = log_l
 
         pi, m, S = maximization(X, g)
         if pi is None or m is None or S is None:
             return None, None, None, None, None
-
-        prev_l = lh
-
-    g, lh = expectation(X, pi, m, S)
-    if g is None or lh is None:
-        return None, None, None, None, None
 
     return pi, m, S, g, lh
