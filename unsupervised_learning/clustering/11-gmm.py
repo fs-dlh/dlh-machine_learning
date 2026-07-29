@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ Module for K-means clustering on the dataset X. """
 import numpy as np
-from sklearn.mixture import GaussianMixture
+import sklearn.mixture as skm
 
 
 def gmm(X, k):
@@ -21,7 +21,7 @@ def gmm(X, k):
         bic: float, the Bayesian Information Criterion for the fitted model.
     """
 
-    model = GaussianMixture(n_components=k, covariance_type='full')
+    model = skm.GaussianMixture(n_components=k, covariance_type='full')
     model.fit(X)
 
     # Extract parameters
