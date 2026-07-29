@@ -32,20 +32,17 @@ def kmeans(X, k, iterations=1000):
     maxs = X.max(axis=0)
 
     C = np.random.uniform(low=mins, high=maxs, size=(k, d))
-
-    rp = np.random.uniform(low=mins, high=maxs, size=(k * iterations + 1, d))
-    ri = 0
-
-    for _ in range(iterations):
+    rp = np.random.uniform(low=mins, high=maxs, size=(iterations, k, d))
+  
+    for i in range(iterations):
         distances = np.linalg.norm(X[:, None] - C, axis=2)
         clss = np.argmin(distances, axis=1)
         new_C = np.zeros((k, d))
 
-        for j in range(k - 1, -1, -1):
+        for j in range(k):
             mask = (clss == j)
             if not np.any(mask):
-                new_C[j] = rp[ri]
-                ri += 1
+                new_C[j] = rp[i, j]
             else:
                 new_C[j] = X[mask].mean(axis=0)
         if np.array_equal(new_C, C):
