@@ -33,7 +33,7 @@ def kmeans(X, k, iterations=1000):
 
     C = np.random.uniform(low=mins, high=maxs, size=(k, d))
 
-    rp = np.random.uniform(low=mins, high=maxs, size=(k * iterations, d))
+    rp = np.random.uniform(low=mins, high=maxs, size=(k * iterations + 1, d))
     ri = 0
 
     for _ in range(iterations):
@@ -41,10 +41,10 @@ def kmeans(X, k, iterations=1000):
         clss = np.argmin(distances, axis=1)
         new_C = np.zeros((k, d))
 
-        for j in range(k):
+        for j in range(k - 1, -1, -1):
             mask = (clss == j)
             if not np.any(mask):
-                new_C[j] = rp[ri % (k * iterations)]
+                new_C[j] = rp[ri]
                 ri += 1
             else:
                 new_C[j] = X[mask].mean(axis=0)
