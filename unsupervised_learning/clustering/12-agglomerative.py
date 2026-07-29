@@ -24,9 +24,6 @@ def agglomerative(X, dist):
 
     plt.figure()
     sch.dendrogram(Z, color_threshold=dist)
-    plt.title('Dendrogram')
-    plt.xlabel('Sample index')
-    plt.ylabel('Distance')
     plt.show()
 
     return clss
