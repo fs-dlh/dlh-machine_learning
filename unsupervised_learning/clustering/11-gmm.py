@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """ Module for K-means clustering on the dataset X. """
-import numpy as np
 import sklearn.mixture as skm
 
 
