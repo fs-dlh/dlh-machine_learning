@@ -35,7 +35,6 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
         return None, None, None, None, None
 
     try:
-        # Import required functions
         initialize = __import__('4-initialize').initialize
         expectation = __import__('6-expectation').expectation
         maximization = __import__('7-maximization').maximization
@@ -43,34 +42,29 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
         return None, None, None, None, None
 
     pi, m, S = initialize(X, k)
-    if pi is None or m is None or S is None:
-        return None, None, None, None, None
+    g, l_prev = expectation(X, pi, m, S)
 
-    prev_l = None
+    if verbose:
+        print(f"Log Likelihood after 0 iterations: {l_prev:.5f}")
 
-    for i in range(iterations):
-        g, l = expectation(X, pi, m, S)
-        if g is None or l is None:
-            return None, None, None, None, None
+    i = 0
+    while i < iterations:
+        i += 1
 
-        if verbose and (i % 10 == 0 or i == iterations - 1):
-            print("Log Likelihood after {} iterations: {:.5f}"
-                  .format(i, l))
-
-        if prev_l is not None and abs(l - prev_l) <= tol:
-            return pi, m, S, g, l
-
-        if i == iterations:
-            break
-
-        prev_l = l
-
+        # Maximization step
         pi, m, S = maximization(X, g)
-        if pi is None or m is None or S is None:
-            return None, None, None, None, None
 
-    g, l = expectation(X, pi, m, S)
-    if pi is None or m is None or S is None or g is None or lh is None:
-        return None, None, None, None, None
+        # Expectation step
+        g, lh = expectation(X, pi, m, S)
 
-    return pi, m, S, g, l
+        if verbose and (i % 10 == 0 or i == iterations):
+            print(f"Log Likelihood after {i} iterations: {lh:.5f}")
+
+        if abs(lh - l_prev) <= tol:
+            if verbose and i % 10 != 0 and i != iterations:
+                print(f"Log Likelihood after {i} iterations: {lh:.5f}")
+            return pi, m, S, g, lh
+
+        l_prev = lh
+
+    return pi, m, S, g, l_prev
