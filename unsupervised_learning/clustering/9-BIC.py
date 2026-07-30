@@ -35,7 +35,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
     if kmax is None:
         kmax = n
 
-    if kmin > kmax:
+    if kmin >= kmax:
         return None, None, None, None
 
     l_list = []
