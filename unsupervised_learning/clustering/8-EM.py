@@ -51,10 +51,8 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
     while i < iterations:
         i += 1
 
-        # Maximization step
         pi, m, S = maximization(X, g)
 
-        # Expectation step
         g, lh = expectation(X, pi, m, S)
 
         if verbose and (i % 10 == 0 or i == iterations):
