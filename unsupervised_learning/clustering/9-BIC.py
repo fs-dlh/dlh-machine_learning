@@ -1,80 +1,68 @@
 #!/usr/bin/env python3
 """ Module calculates the expectation maximization for a GMM. """
 import numpy as np
+expectation_maximization = __import__('8-EM').expectation_maximization
 
 
 def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
-    """
-    Finds the best number of clusters for a Gaussian Mixture Model using BIC.
+    """ Finds the best number of clusters for a GMM using BIC.
 
     Args:
-        X: numpy.ndarray of shape (n, d) containing the dataset.
-        kmin: positive int, minimum number of clusters to check (inclusive).
-        kmax: positive int or None, maximum number of clusters to check.
-              If None, set to the maximum possible (number of data points).
-        iterations: positive int, maximum number of EM iterations.
-        tol: non-negative float, tolerance for the EM algorithm.
-        verbose: bool, whether EM should print information.
+        X: numpy.ndarray (n, d) containing the dataset.
+        kmin: minimum number of clusters to check (inclusive).
+        kmax: maximum number of clusters to check.
+        iterations: maximum number of EM iterations.
+        tol: tolerance for the EM algorithm.
+        verbose: whether EM should print information.
 
     Returns:
         best_k: int, the best number of clusters based on BIC.
         best_result: tuple (pi, m, S) for the best model.
-        l: numpy.ndarray of shape (kmax-kmin+1) containing log‑likelihoods.
-        b: numpy.ndarray of shape (kmax-kmin+1) containing BIC values.
+        l_list: numpy.ndarray (kmax-kmin+1) containing log‑likelihoods.
+        b_list: numpy.ndarray (kmax-kmin+1) containing BIC values.
         Or (None, None, None, None) on failure.
     """
 
-    expectation_maximization = __import__('8-EM').expectation_maximization
-    if not isinstance(X, np.ndarray) or X.ndim != 2:
+    if (not isinstance(X, np.ndarray) or X.ndim != 2 or
+            type(kmin) is not int or kmin <= 0 or
+            (kmax is not None and (type(kmax) is not int or kmax <= 0)) or
+            type(iterations) is not int or iterations <= 0 or
+            type(tol) is not float or tol < 0 or
+            type(verbose) is not bool):
         return None, None, None, None
 
     n, d = X.shape
-    if n == 0 or d == 0:
-        return None, None, None, None
-
-    if not isinstance(kmin, int) or kmin < 1:
-        return None, None, None, None
-
     if kmax is None:
         kmax = n
-    else:
-        if not isinstance(kmax, int) or kmax < 1:
-            return None, None, None, None
 
     if kmin > kmax:
         return None, None, None, None
+
     l_list = []
     b_list = []
-    best_k = None
-    best_result = None
-    best_bic = float('inf')
+    best_results = []
+
     for k in range(kmin, kmax + 1):
-        try:
-            result = expectation_maximization(X, k, iterations, tol, verbose)
-            if result is None:
-                raise ValueError("EM returned None")
-
-            if len(result) == 4:
-                pi, m, S, logl = result
-            elif len(result) == 5:
-                pi, m, S, g, logl = result
-            else:
-                raise ValueError("Unexpected return length from EM")
-
-        except Exception:
+        pi, m, S, g, ll = expectation_maximization(
+            X, k, iterations, tol, verbose
+        )
+        if pi is None or m is None or S is None or ll is None:
             return None, None, None, None
-        p = (k - 1) + k * d + k * d * (d + 1) // 2
 
-        bic = p * np.log(n) - 2.0 * logl
+        p = (k - 1) + (k * d) + (k * d * (d + 1) / 2)
 
-        l_list.append(logl)
+        bic = (p * np.log(n)) - (2 * ll)
+
         b_list.append(bic)
-        if bic < best_bic or (bic == best_bic and best_k is None):
-            best_bic = bic
-            best_k = k
-            best_result = (pi, m, S)
+        l_list.append(ll)
 
-    if best_k is None:
-        return None, None, None, None
+        best_results.append((pi, m, S))
 
-    return best_k, best_result, np.array(l_list), np.array(b_list)
+    b_list = np.array(b_list)
+    l_list = np.array(l_list)
+
+    best_idx = np.argmin(b_list)
+    best_k = kmin + best_idx
+    best_result = best_results[best_idx]
+
+    return best_k, best_result, l_list, b_list
