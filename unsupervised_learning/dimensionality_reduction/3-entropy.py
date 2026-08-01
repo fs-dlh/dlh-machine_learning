@@ -18,18 +18,15 @@ def HP(Di, beta):
     if isinstance(beta, np.ndarray):
         beta = beta.item() if beta.size == 1 else beta
 
-    log_p = -beta * Di
+    P = np.exp(-Di * beta)
 
-    max_log = np.max(log_p)
+    sum_P = np.sum(P)
 
-    p = np.exp(log_p - max_log)
-
-    sum_p = np.sum(p)
-    Pi = p / sum_p
+    Pi = P / sum_P
 
     mask = Pi > 0
     if np.any(mask):
-        Hi = -np.sum(Pi[mask] * np.log2(Pi[mask]))
+        Hi = np.log2(sum_P) + beta * np.sum(Di * Pi) * np.log2(np.e)
     else:
         Hi = 0.0
 
