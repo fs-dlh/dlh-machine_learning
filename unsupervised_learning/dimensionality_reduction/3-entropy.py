@@ -24,10 +24,6 @@ def HP(Di, beta):
 
     Pi = P / sum_P
 
-    mask = Pi > 0
-    if np.any(mask):
-        Hi = np.log2(sum_P) + beta * np.sum(Di * Pi) * np.log2(np.e)
-    else:
-        Hi = 0.0
+    Hi = np.log2(sum_P) + beta * np.sum(Di * Pi) * np.log2(np.e)
 
     return Hi, Pi
