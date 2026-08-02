@@ -12,7 +12,7 @@ def HP(Di, beta):
 
     Returns:
         Hi : Shannon entropy of the points.
-        Pi : shape (n - 1,) containing the P affinities of the points.
+        Pi : containing the P affinities of the points.
     """
 
     P = np.exp(-Di * beta)
