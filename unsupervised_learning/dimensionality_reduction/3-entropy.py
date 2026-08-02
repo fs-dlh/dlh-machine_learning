@@ -15,17 +15,10 @@ def HP(Di, beta):
         Pi : shape (n - 1,) containing the P affinities of the points.
     """
 
-    if isinstance(beta, np.ndarray):
-        beta = beta.item() if beta.size == 1 else beta
-
     P = np.exp(-Di * beta)
-
     sum_P = np.sum(P)
-
     Pi = P / sum_P
-
-    Hi = np.log(sum_P)
-    Hi += beta * np.sum(Di * P) / sum_P
+    Hi = np.log(sum_P) + beta * np.sum(Di * P) / sum_P
     Hi /= np.log(2)
 
     return Hi, Pi

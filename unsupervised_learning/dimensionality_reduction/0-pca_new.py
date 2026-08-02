@@ -14,14 +14,10 @@ def pca(X, var=0.95):
         numpy.ndarray: weight matrix W of shape (d, nd), where nd is the new
                        dimensionality. Each column is a principal component.
     """
-    U, S, Vh = np.linalg.svd(X)
+    U, S, Vt = np.linalg.svd(X, full_matrices=False)
 
-    total_var = np.sum(S)
+    explained = np.cumsum(S ** 2) / np.sum(S ** 2)
 
-    cumsum = np.cumsum(S)
+    nd = np.searchsorted(explained, var) + 1
 
-    k = np.argmax(cumsum >= var * total_var) + 1
-
-    W = Vh.T[:, :k]
-
-    return W
+    return Vh[:nd].T
