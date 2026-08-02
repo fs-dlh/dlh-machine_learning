@@ -11,8 +11,8 @@ def HP(Di, beta):
         beta : beta value for the Gaussian distribution.
 
     Returns:
-        Hi : Shannon entropy of the conditional distribution (base 2).
-        Pi : shape (n - 1,), conditional probabilities p_{j|i} for all j ≠ i.
+        Hi : Shannon entropy of the points.
+        Pi : shape (n - 1,) containing the P affinities of the points.
     """
 
     if isinstance(beta, np.ndarray):
@@ -24,6 +24,8 @@ def HP(Di, beta):
 
     Pi = P / sum_P
 
-    Hi = np.log2(sum_P) + beta * np.sum(Di * Pi) * np.log2(np.e)
+    Hi = np.log(sum_P)
+    Hi += beta * np.sum(Di * P) / sum_P
+    Hi /= np.log(2)
 
     return Hi, Pi
