@@ -11,7 +11,7 @@ def cost(P, Q):
     Q : containing the Q affinities
 
     Returns:
-    C : the cost of the transformation, 
+    C : the cost of the transformation,
         C = sum_{i≠j} p_ij * log(p_ij / q_ij).
     """
     eps = 1e-12
