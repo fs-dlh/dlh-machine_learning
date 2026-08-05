@@ -23,10 +23,10 @@ def tsne(X, ndims=2, idims=50, perplexity=30.0, iterations=1000, lr=500):
     """
 
     X_pca = pca(X, idims)
-    P = P_affinities(X_pca, perplexity)
+    P = P_affinities(X_pca, 1e-5, perplexity)
 
-    n, _ = X.shape
-    Y = np.random.randn(n, ndims) * 1e-4
+    n, _ = X_pca.shape
+    Y = np.random.randn(n, ndims) * 1e-8
     Y_prev = np.copy(Y)
 
     for i in range(1, iterations + 1):
@@ -44,7 +44,8 @@ def tsne(X, ndims=2, idims=50, perplexity=30.0, iterations=1000, lr=500):
         Y_prev = Y
         Y = Y_new
         if i % 100 == 0:
-            C = cost(P, Q)
+            _, Q = grads(Y, P_eff)
+            C = cost(P_eff, Q)
             print(f"Cost at iteration {i}: {C}")
 
     return Y
