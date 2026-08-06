@@ -131,7 +131,6 @@ class DeepNeuralNetwork:
             alpha : learning rate.
         """
         m = Y.shape[1]
-        # dZ for the last layer: A_L - Y (since sigmoid + cross-entropy)
         dZ = cache[f"A{self.__L}"] - Y
 
         for layer in range(self.__L, 0, -1):
