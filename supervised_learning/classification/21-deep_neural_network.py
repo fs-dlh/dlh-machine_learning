@@ -135,15 +135,18 @@ class DeepNeuralNetwork:
 
         for layer in range(self.__L, 0, -1):
             A_prev = cache[f"A{layer - 1}"]
-            W = self.__weights[f"W{layer}"]
+            W = self.__weights[f"W{layer}"].copy()
 
             dW = (1 / m) * np.matmul(dZ, A_prev.T)
             db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
+
+            if layer > 1:
+                dA_prev = np.matmul(W.T, dZ)
+                A_prev_sigmoid = cache[f"A{layer - 1}"]
+                dZ_prev = dA_prev * (A_prev_sigmoid * (1 - A_prev_sigmoid))
 
             self.__weights[f"W{layer}"] -= alpha * dW
             self.__weights[f"b{layer}"] -= alpha * db
 
             if layer > 1:
-                dA_prev = np.matmul(W.T, dZ)
-                A_prev_sigmoid = cache[f"A{layer - 1}"]
-                dZ = dA_prev * (A_prev_sigmoid * (1 - A_prev_sigmoid))
+                dZ = dZ_prev
