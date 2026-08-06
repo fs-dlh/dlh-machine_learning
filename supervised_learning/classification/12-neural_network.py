@@ -10,8 +10,8 @@ class NeuralNetwork:
         __W1: weights for hidden layer (nodes, nx)
         __b1: bias for hidden layer (nodes, 1)
         __A1: activated output of hidden layer
-        __W2: weights for output neuron (1, nodes)
-        __ b2: bias for output neuron (scalar)
+        __ W2: weights for output neuron (1, nodes)
+        __b2: bias for output neuron (scalar)
         __A2: activated output of output neuron (prediction)
     Getters:
         W1, b1, A1, W2, b2, A2
@@ -105,3 +105,21 @@ class NeuralNetwork:
         m = Y.shape[1]
         cost = -1 / m * np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
         return cost
+
+    def evaluate(self, X, Y):
+        """ Evaluates the neural network's predictions.
+
+        Args:
+            X : input data of shape (nx, m).
+            Y : correct labels of shape (1, m).
+
+        Returns:
+            tuple: (prediction, cost)
+                prediction: numpy.ndarray of shape (1, m) with predicted labels
+                            (1 if activation >= 0.5 else 0)
+                cost: float
+        """
+        _, A2 = self.forward_prop(X)
+        cost = self.cost(Y, A2)
+        prediction = (A2 >= 0.5).astype(int)
+        return prediction, cost
