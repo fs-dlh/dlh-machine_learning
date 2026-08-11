@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """  0-sequential module  """
 from tensorflow import keras as K
 
