@@ -19,13 +19,13 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
     """
 
     model = K.Sequential()
-    for i, layer_size in enumerate(layers):
+    for i in range(len(layers)):
         if i == 0:
             input_shape = (nx,)
         else:
             input_shape = None
         model.add(K.layers.Dense(
-            units=layer_size,
+            layers[i],
             activation=activations[i],
             input_shape=input_shape,
             kernel_regularizer=K.regularizers.l2(lambtha)
