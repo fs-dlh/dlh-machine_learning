@@ -19,17 +19,17 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
     """
 
     model = K.Sequential()
-    for i, units in enumerate(layers):
-        # Create a Dense layer with L2 regularization on kernel
+    for i in range(len(layers)):
+
         dense = K.layers.Dense(
-            units=units,
+            layers[i],
             activation=activations[i],
             kernel_regularizer=K.regularizers.l2(lambtha),
             input_shape=(nx,) if i == 0 else None
         )
         model.add(dense)
 
-        if i != len(layers) - 1:
+        if i != len(layers) - 1 and keep_prob is not None:
             dropout_rate = 1 - keep_prob
             model.add(K.layers.Dropout(dropout_rate))
 
