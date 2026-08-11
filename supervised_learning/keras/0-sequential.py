@@ -23,14 +23,13 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
 
         dense = K.layers.Dense(
             layers[i],
+            input_dim=nx,
             activation=activations[i],
-            kernel_regularizer=K.regularizers.l2(lambtha),
-            input_shape=(nx,) if i == 0 else None
+            kernel_regularizer=K.regularizers.l2(lambtha)
         )
         model.add(dense)
 
-        if i != len(layers) - 1 and keep_prob is not None:
-            dropout_rate = 1 - keep_prob
-            model.add(K.layers.Dropout(dropout_rate))
+        if (i != len(layers) - 1) and (keep_prob is not None):
+            model.add(K.layers.Dropout(rate=1 - keep_prob))
 
     return model
