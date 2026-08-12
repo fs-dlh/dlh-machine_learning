@@ -7,26 +7,8 @@ def train_model(network, data, labels, batch_size, epochs,
                 validation_data=None, early_stopping=False, patience=0,
                 learning_rate_decay=False, alpha=0.1, decay_rate=1,
                 verbose=True, shuffle=False):
-    """ Trains a model using mini-batch gradient descent with optional
-        early stopping and inverse time decay learning rate scheduling.
+    """ Trains a model using mini-batch gradient.
 
-    Args:
-        network : compiled model to train.
-        data : shape (m, nx) input data.
-        labels : one-hot shape (m, classes) labels.
-        batch_size : batch size.
-        epochs : number of epochs.
-        validation_data : (x_val, y_val) for validation.
-        early_stopping : whether to use early stopping based on val_loss.
-        patience : patience for early stopping.
-        learning_rate_decay : whether to use inverse time decay.
-        alpha : initial learning rate for decay.
-        decay_rate : decay rate factor.
-        verbose : whether to print progress.
-        shuffle : whether to shuffle data before each epoch.
-
-    Returns:
-        keras.callbacks.History: training history object.
     """
     callbacks = []
 
