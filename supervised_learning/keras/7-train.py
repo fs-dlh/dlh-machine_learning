@@ -14,12 +14,14 @@ def train_model(network, data, labels, batch_size, epochs,
 
     if validation_data is not None:
         if early_stopping:
-        callbacks.append(K.callbacks.EarlyStopping(monitor='val_loss',
-                                                   patience=patience))
+            callbacks.append(K.callbacks.EarlyStopping(monitor='val_loss',
+                                                       patience=patience))
         if learning_rate_decay:
-                    def lr_scheduler(epoch, lr=None):
-                        """ Inverse time decay schedule.   """
-                        return alpha / (1 + decay_rate * epoch)
+            def lr_scheduler(epoch, lr=None):
+                """ Inverse time decay schedule.   """
+                return alpha / (1 + decay_rate * epoch)
+            callbacks.append(K.callbacks.LearningRateScheduler(schedule,
+                                                               verbose=1))
 
     history = network.fit(x=data, y=labels, batch_size=batch_size,
                           epochs=epochs, verbose=verbose, shuffle=shuffle,
