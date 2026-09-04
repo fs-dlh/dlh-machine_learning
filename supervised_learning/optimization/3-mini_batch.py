@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ 3-mini_batch module """
 import numpy as np
-from 2-shuffle_data import shuffle_data
+shuffle_data = __import__('2-shuffle_data').shuffle_data
 
 
 def create_mini_batches(X, Y, batch_size):
