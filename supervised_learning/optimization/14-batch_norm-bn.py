@@ -23,12 +23,14 @@ def create_batch_norm_layer(prev, n, activation):
     )
     Z = dense(prev)
 
-    mean, var = tf.nn.moments(Z, axes=[0])
-    gamma = tf.Variable(tf.ones((1, n)))
-    beta = tf.Variable(tf.zeros((1, n)))
-
-    Z_norm = tf.nn.batch_normalization(
-        Z, mean, var, beta, gamma, variance_epsilon=1e-7)
+    bn = tf.keras.layers.BatchNormalization(
+        epsilon=1e-7,
+        center=True,
+        scale=True,
+        gamma_initializer='ones',
+        beta_initializer='zeros'
+    )
+    Z_norm = bn(Z)
 
     if activation is not None:
         return activation(Z_norm)
