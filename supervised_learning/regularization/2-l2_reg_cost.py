@@ -20,5 +20,5 @@ def l2_reg_cost(cost, model):
     if not reg_losses:
         return tf.constant([], dtype=tf.float32)
 
-    total_costs = cost + tf.stack(reg_losses)
+    total_costs = cost + tf.reduce_sum(model.losses)
     return total_costs
