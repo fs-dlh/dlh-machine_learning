@@ -8,11 +8,7 @@ def l2_reg_cost(cost, model):
 
     Args:
         cost : tensor containing the unregularized cost
-                          (e.g., cross-entropy loss). This parameter is
-                          included for interface consistency but is not
-                          used in the computation.
-        model : Keras model that includes layers with L2
-                                regularization.
+        model : Keras model that includes layers with L2 regularization.
 
     Returns:
         tf.Tensor: a 1D tensor containing the L2 regularization loss for
@@ -21,9 +17,8 @@ def l2_reg_cost(cost, model):
     """
 
     reg_losses = model.losses
-    if reg_losses:
-
-        return tf.stack(reg_losses)
-    else:
-
+    if not reg_losses:
         return tf.constant([], dtype=tf.float32)
+
+    total_costs = cost + tf.stack(reg_losses)
+    return total_costs
