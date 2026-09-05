@@ -17,5 +17,9 @@ def create_confusion_matrix(labels, logits):
                        with rows representing true labels and columns
                        representing predicted labels.
     """
-
-    return np.matmul(labels.T, logits)
+    m, classes = labels.shape
+    true = np.argmax(labels, axis=1)
+    pred = np.argmax(logits, axis=1)
+    confusion = np.zeros((classes, classes), dtype=int)
+    np.add.at(confusion, (true, pred), 1)
+    return confusion
