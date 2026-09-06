@@ -16,9 +16,7 @@ def l2_reg_cost(cost, model):
                    the order in which the layers were added.
     """
 
-    reg_losses = model.losses
-    if not reg_losses:
+    if not model.losses:
         return tf.constant([], dtype=tf.float32)
 
-    total_costs = cost + tf.reduce_sum(model.losses)
-    return total_costs
+    return cost + tf.reduce_sum(model.losses)
