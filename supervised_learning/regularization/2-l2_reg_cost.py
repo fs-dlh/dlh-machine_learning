@@ -14,9 +14,11 @@ def l2_reg_cost(cost, model):
         tf.Tensor: a 1D tensor containing the L2 regularization loss for
                    each regularized layer in the model. The order matches
                    the order in which the layers were added.
-    """
+
 
     if not model.losses:
         return tf.constant([], dtype=tf.float32)
 
-    return cost + tf.reduce_sum(model.losses)
+    return cost + tf.reduce_sum(model.losses) """
+
+    return cost + tf.stack(model.losses)
