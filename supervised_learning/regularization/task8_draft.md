@@ -9,11 +9,11 @@ Here is how they work:
 Imagine you are packing a backpack for a trip, but you have to pay a toy tax for every single toy you pack. To save money, you decide to completely throw out the useless toys (like a broken crayon or a random rock) and only keep the absolute most important things. This makes your backpack light, simple, and easy to carry.
 
 ## Technical Definition: 
-A regularization method that adds a penalty equal to the sum of the absolute values of the model's weights to the loss function :
+A regularization method that adds a penalty equal to the sum of the absolute values of the model's weights to the loss function:
 
  $$\text{Loss} = \text{Original Loss} + \lambda \sum |w_i|$$ 
- 
- Because the absolute value penalty creates a sharp constraint, it tends to drive some weights exactly to zero1. This mathematically removes those features from the model, making L1 an automatic method for feature selection
+
+ Because the absolute value penalty creates a sharp constraint, it tends to drive some weights exactly to zero. This mathematically removes those features from the model, making L1 an automatic method for feature selection
 
 ## How it works: 
 It places a tax proportional to the absolute weight of each item, pushing unnecessary features all the way to zero (throwing useless toys completely out of the backpack)
@@ -38,6 +38,13 @@ When your features are highly correlated and you cannot afford to have similar v
 # 2. L2 Regularization (Ridge / The Shrinking Machine)
 
 Now imagine a different rule where bringing really big toys costs a ton of money. Instead of throwing any toys away, you use a shrinking machine to make all of your toys as tiny as possible. You still keep every single toy, but now they are so small they don't weigh you down.
+
+## Technical Definition: 
+A regularization method that adds a penalty equal to the sum of the squared values of the model's weights to the loss function:
+
+$$\text{Loss} = \text{Original Loss} + \lambda \sum (w_i)^2$$ 
+
+Known as weight decay, it gradually penalizes large weights and decays them toward zero2. However, because the penalty for tiny weights is incredibly small, L2 never reduces weights to exactly zero2—it keeps all features but minimizes their overall influence27
 
 ## How it works: 
 It places a tax proportional to the square of each item's weight, shrinking all features to be as small as possible but never removing them entirely (shrinking all toys to a tiny size)
