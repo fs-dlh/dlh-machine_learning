@@ -8,6 +8,9 @@ Here is how they work:
 
 Imagine you are packing a backpack for a trip, but you have to pay a toy tax for every single toy you pack. To save money, you decide to completely throw out the useless toys (like a broken crayon or a random rock) and only keep the absolute most important things. This makes your backpack light, simple, and easy to carry.
 
+## Technical Definition: 
+A regularization method that adds a penalty equal to the sum of the absolute values of the model's weights to the loss function1: $$\text{Loss} = \text{Original Loss} + \lambda \sum |w_i|$$ Because the absolute value penalty creates a sharp constraint, it tends to drive some weights exactly to zero1. This mathematically removes those features from the model, making L1 an automatic method for feature selection
+
 ## How it works: 
 It places a tax proportional to the absolute weight of each item, pushing unnecessary features all the way to zero (throwing useless toys completely out of the backpack)
 
