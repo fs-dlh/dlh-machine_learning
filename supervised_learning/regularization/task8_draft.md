@@ -97,7 +97,6 @@ Traditional machine learning models (like regression or decision trees) or on co
 If you only have a few pictures of your friend, you might not recognize them if they are wearing a silly hat, standing upside down, or standing in a dark room. To fix this, you take your pictures and spin them around, zoom in, and make them brighter or darker
 Now you have tons of pictures, and you can recognize your friend anywhere.
 
-
 ## Technical Definition: 
 A process of artificially expanding the size of a training dataset by applying meaning-preserving transformations to existing data. For images, this involves manipulations like horizontal flips, rotations, zoom modifications, and changes to brightness or contrast. For text, it includes swapping words with synonyms or utilizing back-translation
 
@@ -125,6 +124,9 @@ When the transformations you apply distort the data's fundamental meaning or cre
 
 Imagine baking yummy cookies. If you take them out too fast, they are unbaked. If you leave them in too long, they get burned
 This trick is like watching the oven closely and pulling the cookies out the exact second they are perfectly baked.
+
+## Technical Definition: 
+An implicit regularization method that monitors the model's performance on a separate, unseen validation dataset throughout the training process. Training is stopped at the precise epoch when validation performance ceases to improve (or begins to degrade), even if the training loss is still going down. This prevents the model from beginning to overfit to the noise in the training set.
 
 ## How it works: 
 It watches the model's performance on a separate validation set and halts training the exact second that performance stops improving
