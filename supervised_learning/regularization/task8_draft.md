@@ -69,6 +69,9 @@ When your dataset has thousands of features and you need a simpler, faster model
 
 Imagine you are training a sports team, but at every practice, you randomly make some of your players sit on the bench. This forces all the other players to learn how to work together, instead of just letting one superstar player do all the work. 
 
+## Technical Definition: 
+A technique designed for deep neural networks where, during each training step, individual neurons are randomly "dropped" (temporarily set to zero) with a pre-defined probability $p. This prevents neurons from co-adapting (becoming overly dependent on each other) and forces the network to learn robust, redundant representations.
+
 ## How it works: 
 During neural network training, it randomly disables a portion of the neurons (benching players) so the network cannot rely on any single superstar neuron
  
