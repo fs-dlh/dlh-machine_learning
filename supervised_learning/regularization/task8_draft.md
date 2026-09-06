@@ -97,6 +97,10 @@ Traditional machine learning models (like regression or decision trees) or on co
 If you only have a few pictures of your friend, you might not recognize them if they are wearing a silly hat, standing upside down, or standing in a dark room. To fix this, you take your pictures and spin them around, zoom in, and make them brighter or darker
 Now you have tons of pictures, and you can recognize your friend anywhere.
 
+
+## Technical Definition: 
+A process of artificially expanding the size of a training dataset by applying meaning-preserving transformations to existing data. For images, this involves manipulations like horizontal flips, rotations, zoom modifications, and changes to brightness or contrast. For text, it includes swapping words with synonyms or utilizing back-translation
+
 ## How it works: 
 It takes your existing training data and applies small, realistic changes—like rotating pictures or replacing words with synonyms—to artificially grow your dataset
 
