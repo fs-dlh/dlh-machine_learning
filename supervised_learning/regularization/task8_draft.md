@@ -8,7 +8,8 @@ Here is how they work:
 
 Imagine you are packing a backpack for a trip, but you have to pay a toy tax for every single toy you pack. To save money, you decide to completely throw out the useless toys (like a broken crayon or a random rock) and only keep the absolute most important things. This makes your backpack light, simple, and easy to carry.
 
-# How it works: It places a tax proportional to the absolute weight of each item, pushing unnecessary features all the way to zero (throwing useless toys completely out of the backpack)
+# How it works: 
+It places a tax proportional to the absolute weight of each item, pushing unnecessary features all the way to zero (throwing useless toys completely out of the backpack)
 
 # Pros:
 Automatically performs feature selection by removing irrelevant inputs
@@ -31,7 +32,8 @@ When your features are highly correlated and you cannot afford to have similar v
 
 Now imagine a different rule where bringing really big toys costs a ton of money. Instead of throwing any toys away, you use a shrinking machine to make all of your toys as tiny as possible. You still keep every single toy, but now they are so small they don't weigh you down.
 
-# How it works: It places a tax proportional to the square of each item's weight, shrinking all features to be as small as possible but never removing them entirely (shrinking all toys to a tiny size)
+# How it works: 
+It places a tax proportional to the square of each item's weight, shrinking all features to be as small as possible but never removing them entirely (shrinking all toys to a tiny size)
  
 # Pros:
 Handles correlated features exceptionally well
@@ -53,7 +55,8 @@ When your dataset has thousands of features and you need a simpler, faster model
 
 Imagine you are training a sports team, but at every practice, you randomly make some of your players sit on the bench. This forces all the other players to learn how to work together, instead of just letting one superstar player do all the work. 
 
-# How it works: During neural network training, it randomly disables a portion of the neurons (benching players) so the network cannot rely on any single superstar neuron
+# How it works: 
+During neural network training, it randomly disables a portion of the neurons (benching players) so the network cannot rely on any single superstar neuron
  
 # Pros:
 Incredibly powerful at stopping overfitting in deep networks
@@ -77,7 +80,8 @@ Traditional machine learning models (like regression or decision trees) or on co
 If you only have a few pictures of your friend, you might not recognize them if they are wearing a silly hat, standing upside down, or standing in a dark room. To fix this, you take your pictures and spin them around, zoom in, and make them brighter or darker
 Now you have tons of pictures, and you can recognize your friend anywhere.
 
-# How it works: It takes your existing training data and applies small, realistic changes—like rotating pictures or replacing words with synonyms—to artificially grow your dataset
+# How it works: 
+It takes your existing training data and applies small, realistic changes—like rotating pictures or replacing words with synonyms—to artificially grow your dataset
 
 # Pros:
 Increases your dataset size for free without collecting new data
@@ -101,7 +105,8 @@ When the transformations you apply distort the data's fundamental meaning or cre
 Imagine baking yummy cookies. If you take them out too fast, they are unbaked. If you leave them in too long, they get burned
 This trick is like watching the oven closely and pulling the cookies out the exact second they are perfectly baked.
 
-# How it works: It watches the model's performance on a separate validation set and halts training the exact second that performance stops improving
+# How it works: 
+It watches the model's performance on a separate validation set and halts training the exact second that performance stops improving
 
 # Pros:
 Extremely simple to use and costs almost nothing computationally
