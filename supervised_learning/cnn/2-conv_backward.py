@@ -24,25 +24,21 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
         db: partial derivatives with respect to the biases.
     """
     m, h_new, w_new, c_new = dZ.shape
-    _, h_prev, w_prev, c_prev = A_prev.shape
+    _, h_prev, w_prev, _ = A_prev.shape
     kh, kw, _, _ = W.shape
     sh, sw = stride
 
-    if padding == 'valid':
-        pad_top = pad_bottom = pad_left = pad_right = 0
-    elif padding == 'same':
-        total_pad_h = max(0, (h_new - 1) * sh + kh - h_prev)
-        total_pad_w = max(0, (w_new - 1) * sw + kw - w_prev)
-        pad_top = total_pad_h // 2
-        pad_bottom = total_pad_h - pad_top
-        pad_left = total_pad_w // 2
-        pad_right = total_pad_w - pad_left
+    if padding == 'same':
+        pad_h = int(((h_prev - 1) * sh + kh - h_prev) / 2)
+        pad_w = int(((w_prev - 1) * sw + kw - w_prev) / 2)
+    elif padding == 'valid':
+        pad_h = pad_w = 0
     else:
         raise ValueError("padding must be 'valid' or 'same'")
 
     A_prev_padded = np.pad(
         A_prev,
-        ((0, 0), (pad_top, pad_bottom), (pad_left, pad_right), (0, 0)),
+        ((0, 0), (pad_h, pad_h), (pad_w, pad_w), (0, 0)),
         mode='constant',
         constant_values=0
     )
@@ -67,11 +63,8 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
 
     db = np.sum(dZ, axis=(0, 1, 2), keepdims=True)
 
-    if pad_top > 0 or pad_bottom > 0 or pad_left > 0 or pad_right > 0:
-        dA_prev = dA_prev_padded[
-            :, pad_top:pad_top + h_prev, pad_left:pad_left + w_prev, :
-        ]
-    else:
-        dA_prev = dA_prev_padded
+    dA_prev = dA_prev_padded[
+        :, pad_h:pad_h + h_prev, pad_w:pad_w + w_prev, :
+    ]
 
     return dA_prev, dW, db

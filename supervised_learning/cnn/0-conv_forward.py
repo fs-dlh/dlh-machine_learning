@@ -20,28 +20,24 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
     Returns:
         The output of the convolutional layer (after activation).
     """
-    m, h_prev, w_prev, c_prev = A_prev.shape
-    kh, kw, c_prev_w, c_new = W.shape
+    m, h_prev, w_prev, _ = A_prev.shape
+    kh, kw, _, c_new = W.shape
     sh, sw = stride
 
-    if padding == 'valid':
-        out_h = (h_prev - kh) // sh + 1
-        out_w = (w_prev - kw) // sw + 1
-        pad_top = pad_bottom = pad_left = pad_right = 0
-    elif padding == 'same':
-        out_h = int(np.ceil(h_prev / sh))
-        out_w = int(np.ceil(w_prev / sw))
-        total_pad_h = max(0, (out_h - 1) * sh + kh - h_prev)
-        total_pad_w = max(0, (out_w - 1) * sw + kw - w_prev)
-        pad_top = total_pad_h // 2
-        pad_bottom = total_pad_h - pad_top
-        pad_left = total_pad_w // 2
-        pad_right = total_pad_w - pad_left
+    if padding == 'same':
+        pad_h = int(((h_prev - 1) * sh + kh - h_prev) / 2)
+        pad_w = int(((w_prev - 1) * sw + kw - w_prev) / 2)
+    elif padding == 'valid':
+        pad_h = pad_w = 0
     else:
         raise ValueError("padding must be 'valid' or 'same'")
+
+    out_h = int((h_prev + 2 * pad_h - kh) / sh) + 1
+    out_w = int((w_prev + 2 * pad_w - kw) / sw) + 1
+
     A_pad = np.pad(
         A_prev,
-        ((0, 0), (pad_top, pad_bottom), (pad_left, pad_right), (0, 0)),
+        ((0, 0), (pad_h, pad_h), (pad_w, pad_w), (0, 0)),
         mode='constant',
         constant_values=0
     )
