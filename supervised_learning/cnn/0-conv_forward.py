@@ -21,7 +21,7 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
         The output of the convolutional layer (after activation).
     """
     m, h_prev, w_prev, c_prev = A_prev.shape
-    kh, kw, c_prev_w, c_new = W.shape  # c_prev_w should equal c_prev
+    kh, kw, c_prev_w, c_new = W.shape
     sh, sw = stride
 
     if padding == 'valid':
