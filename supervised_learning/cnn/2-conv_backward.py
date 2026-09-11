@@ -31,10 +31,10 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
     if padding == 'same':
         total_pad_h = max(0, (h_new - 1) * sh + kh - h_prev)
         total_pad_w = max(0, (w_new - 1) * sw + kw - w_prev)
-        pad_top = total_pad_h // 2
-        pad_bottom = total_pad_h - pad_top
-        pad_left = total_pad_w // 2
-        pad_right = total_pad_w - pad_left
+        pad_top = total_pad_h - total_pad_h // 2
+        pad_bottom = total_pad_h // 2
+        pad_left = total_pad_w - total_pad_w // 2
+        pad_right = total_pad_w // 2
     elif padding == 'valid':
         pad_top = pad_bottom = pad_left = pad_right = 0
     else:
