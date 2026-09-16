@@ -9,13 +9,13 @@ def P_affinities(X, tol=1e-5, perplexity=30.0):
     """ Calculates the symmetric P affinities of a data set for t-SNE.
 
     Args:
-        X: numpy.ndarray of shape (n, d) containing the dataset
+        X: numpy.ndarray containing the dataset
         tol: maximum tolerance for the difference in Shannon entropy from
          perplexity for all Gaussian distributions
         perplexity: perplexity that all Gaussian distributions should have
 
     Returns:
-        P: numpy.ndarray of shape (n, n) containing the symmetric P affinities
+        P: numpy.ndarray containing the symmetric P affinities
     """
     n = X.shape[0]
 
