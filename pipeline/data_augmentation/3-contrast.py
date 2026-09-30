@@ -15,6 +15,5 @@ def change_contrast(image, lower, upper):
     Returns:
         The contrast-adjusted image as a tf.Tensor.
     """
-    image = tf.image.convert_image_dtype(image, tf.float32)
-    image = tf.image.random_contrast(image, lower, upper)
-    return tf.image.convert_image_dtype(image, tf.uint8)
+
+    return tf.image.random_contrast(image, lower, upper, seed=None)
