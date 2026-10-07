@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """ This module defines a simple RNN cell. """
-
 import numpy as np
 
 
