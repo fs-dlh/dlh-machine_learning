@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+""" This module defines forward propagation for a deep RNN. """
+import numpy as np
+
+
+def deep_rnn(rnn_cells, X, h_0):
+    """Perform forward propagation for a deep RNN.
+
+    Args:
+        rnn_cells : List of RNNCell instances of length l.
+        X : Data of shape (t, m, i).
+        h_0 : Initial hidden states of shape (l, m, h).
+
+    Returns:
+        tuple: (H, Y)
+            H is a numpy.ndarray of shape (t + 1, l, m, h) containing
+              all hidden states for every layer and time step.
+            Y is a numpy.ndarray of shape (t, m, o) containing
+              all outputs from the final layer.
+    """
+    lrc = len(rnn_cells)
+    t, m, i = X.shape
+    h = h_0.shape[2]
+    o = rnn_cells[-1].Wy.shape[1]
+
+    H = np.zeros((t + 1, lrc, m, h))
+    Y = np.zeros((t, m, o))
+
+    H[0] = h_0
+
+    for step in range(t):
+        x_t = X[step]
+
+        for layer in range(lrc):
+            h_prev = H[step, layer]
+
+            if layer == 0:
+                x_input = x_t
+            else:
+                x_input = H[step + 1, layer - 1]
+
+            h_next, y = rnn_cells[layer].forward(h_prev, x_input)
+
+            H[step + 1, layer] = h_next
+
+            if layer == lrc - 1:
+                Y[step] = y
+
+    return H, Y
