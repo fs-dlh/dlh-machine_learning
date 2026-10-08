@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """ Creates a TF-IDF embedding matrix. """
-
 import re
 import numpy as np
 

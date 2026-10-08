@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """ Trains a Gensim Word2Vec model. """
+import random
 import gensim as gs
 
 
