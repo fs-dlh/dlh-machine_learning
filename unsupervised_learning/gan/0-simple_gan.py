@@ -82,8 +82,6 @@ class Simple_GAN(keras.Model):
         # Train the discriminator disc_iter times
         for _ in range(self.disc_iter):
             with tf.GradientTape() as disc_tape:
-                disc_tape.watch(self.discriminator.trainable_variables)
-
                 real_sample = self.get_real_sample()
                 fake_sample = self.get_fake_sample(training=True)
 
@@ -101,8 +99,6 @@ class Simple_GAN(keras.Model):
 
         # Train the generator once
         with tf.GradientTape() as gen_tape:
-            gen_tape.watch(self.generator.trainable_variables)
-
             fake_sample = self.get_fake_sample(training=True)
             fake_pred = self.discriminator(fake_sample, training=True)
 
