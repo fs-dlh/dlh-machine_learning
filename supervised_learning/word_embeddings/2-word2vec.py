@@ -23,6 +23,9 @@ def word2vec_model(sentences, vector_size=100, min_count=5, window=5,
     """
     sg = 0 if cbow else 1
 
+    random.seed(seed)
+    np.random.seed(seed)
+
     model = gs.models.Word2Vec(
         sentences=sentences,
         vector_size=vector_size,
