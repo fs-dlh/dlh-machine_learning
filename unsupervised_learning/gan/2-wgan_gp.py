@@ -113,7 +113,7 @@ class WGAN_GP(keras.Model):
                 real_pred = self.discriminator(real_sample, training=True)
                 fake_pred = self.discriminator(fake_sample, training=True)
 
-                discr_loss = self.discriminator.loss(fake_pred, real_pred)
+                discr_loss = self.discriminator.loss(real_pred, fake_pred)
                 gp = self.gradient_penalty(interpolated_sample)
                 new_discr_loss = discr_loss + self.lambda_gp * gp
 
