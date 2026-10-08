@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-""" Simple GAN model implementation using Keras. """
+""" Wasserstein GAN with gradient penalty. """
+
 import tensorflow as tf
 from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
 
 
-class Simple_GAN(keras.Model):
-    """ A simple GAN with alternating discriminator and generator updates. """
+class WGAN_GP(keras.Model):
+    """ Wasserstein GAN model using a gradient penalty (WGAN-GP). """
 
     def __init__(self,
                  generator,
@@ -16,8 +17,9 @@ class Simple_GAN(keras.Model):
                  real_examples,
                  batch_size=200,
                  disc_iter=2,
-                 learning_rate=.005):
-        """ Initialize the Simple_GAN model. """
+                 learning_rate=.005,
+                 lambda_gp=10):
+        """ Initialize the WGAN_GP model. """
         super().__init__()
 
         self.latent_generator = latent_generator
@@ -28,13 +30,21 @@ class Simple_GAN(keras.Model):
         self.disc_iter = disc_iter
 
         self.learning_rate = learning_rate
-        self.beta_1 = .5
+        self.beta_1 = .3
         self.beta_2 = .9
 
-        # Generator loss and optimizer
-        self.generator.loss = lambda x: tf.keras.losses.MeanSquaredError()(
-            x, tf.ones(x.shape)
-        )
+        self.lambda_gp = lambda_gp
+        self.dims = self.real_examples.shape
+        self.len_dims = tf.size(self.dims)
+        self.axis = tf.range(1, self.len_dims, delta=1, dtype='int32')
+        self.scal_shape = self.dims.as_list()
+        self.scal_shape[0] = self.batch_size
+        for i in range(1, self.len_dims):
+            self.scal_shape[i] = 1
+        self.scal_shape = tf.convert_to_tensor(self.scal_shape)
+
+        # Generator loss and optimizer (same as WGAN_clip)
+        self.generator.loss = lambda x: -tf.reduce_mean(x)
         self.generator.optimizer = keras.optimizers.Adam(
             learning_rate=self.learning_rate,
             beta_1=self.beta_1,
@@ -45,10 +55,9 @@ class Simple_GAN(keras.Model):
             loss=self.generator.loss
         )
 
-        # Discriminator loss and optimizer
+        # Discriminator loss and optimizer (same as WGAN_clip)
         self.discriminator.loss = lambda x, y: (
-            tf.keras.losses.MeanSquaredError()(x, tf.ones(x.shape)) +
-            tf.keras.losses.MeanSquaredError()(y, -1 * tf.ones(y.shape))
+             tf.reduce_mean(y) - tf.reduce_mean(x)
         )
         self.discriminator.optimizer = keras.optimizers.Adam(
             learning_rate=self.learning_rate,
@@ -67,7 +76,7 @@ class Simple_GAN(keras.Model):
         return self.generator(self.latent_generator(size), training=training)
 
     def get_real_sample(self, size=None):
-        """ Return a random batch of real examples. """
+        """ Return a random batch of real examples."""
         if not size:
             size = self.batch_size
 
@@ -75,36 +84,50 @@ class Simple_GAN(keras.Model):
         random_indices = tf.random.shuffle(sorted_indices)[:size]
         return tf.gather(self.real_examples, random_indices)
 
+    def get_interpolated_sample(self, real_sample, fake_sample):
+        """ Return a random interpolation between real and fake samples. """
+        u = tf.random.uniform(self.scal_shape)
+        v = tf.ones(self.scal_shape) - u
+        return u * real_sample + v * fake_sample
+
+    def gradient_penalty(self, interpolated_sample):
+        """ Compute the gradient penalty term for the discriminator. """
+        with tf.GradientTape() as gp_tape:
+            gp_tape.watch(interpolated_sample)
+            pred = self.discriminator(interpolated_sample, training=True)
+        grads = gp_tape.gradient(pred, [interpolated_sample])[0]
+        norm = tf.sqrt(tf.reduce_sum(tf.square(grads), axis=self.axis))
+        return tf.reduce_mean((norm - 1.0) ** 2)
+
     def train_step(self, useless_argument):
-        """ Run one GAN training step. """
-        discr_loss = tf.constant(0.0)
-
-        # Train the discriminator disc_iter times
+        """ Run one WGAN-GP training step """
         for _ in range(self.disc_iter):
-            with tf.GradientTape() as disc_tape:
-                disc_tape.watch(self.discriminator.trainable_variables)
 
-                real_sample = self.get_real_sample()
-                fake_sample = self.get_fake_sample(training=True)
+            real_sample = self.get_real_sample()
+            fake_sample = self.get_fake_sample()
 
+            interpolated_sample = self.get_interpolated_sample(
+                real_sample, fake_sample
+            )
+            with tf.GradientTape() as tape:
                 real_pred = self.discriminator(real_sample, training=True)
                 fake_pred = self.discriminator(fake_sample, training=True)
 
-                discr_loss = self.discriminator.loss(real_pred, fake_pred)
+                discr_loss = self.discriminator.loss(fake_pred, real_pred)
+                gp = self.gradient_penalty(interpolated_sample)
+                new_discr_loss = discr_loss + self.lambda_gp * gp
 
             discr_grads = disc_tape.gradient(
-                discr_loss, self.discriminator.trainable_variables
+                new_discr_loss, self.discriminator.trainable_variables
             )
             self.discriminator.optimizer.apply_gradients(
                 zip(discr_grads, self.discriminator.trainable_variables)
             )
 
-        # Train the generator once
         with tf.GradientTape() as gen_tape:
-            gen_tape.watch(self.generator.trainable_variables)
 
             fake_sample = self.get_fake_sample(training=True)
-            fake_pred = self.discriminator(fake_sample, training=True)
+            fake_pred = self.discriminator(fake_sample, training=False)
 
             gen_loss = self.generator.loss(fake_pred)
 
@@ -114,4 +137,4 @@ class Simple_GAN(keras.Model):
             zip(gen_grads, self.generator.trainable_variables)
         )
 
-        return {"discr_loss": discr_loss, "gen_loss": gen_loss}
+        return {"discr_loss": discr_loss, "gen_loss": gen_loss, "gp": gp}
