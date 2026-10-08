@@ -9,7 +9,8 @@ import matplotlib.pyplot as plt
 class WGAN_clip(keras.Model):
     """ Wasserstein GAN model using weight clipping for the discriminator. """
 
-    def __init__(self, generator,
+    def __init__(self,
+                 generator,
                  discriminator,
                  latent_generator,
                  real_examples,
@@ -43,8 +44,8 @@ class WGAN_clip(keras.Model):
         )
 
         # Discriminator loss and optimizer
-        self.discriminator.loss = (
-            lambda x, y: tf.math.reduce_mean(x) - tf.math.reduce_mean(y)
+        self.discriminator.loss = lambda x, y: (
+            tf.math.reduce_mean(x) - tf.math.reduce_mean(y)
         )
         self.discriminator.optimizer = keras.optimizers.Adam(
             learning_rate=self.learning_rate,
@@ -74,6 +75,7 @@ class WGAN_clip(keras.Model):
     def train_step(self, useless_argument):
         """ Run one WGAN training step."""
         discr_loss = tf.constant(0.0)
+        gen_loss = tf.constant(0.0)
 
         # Train the discriminator disc_iter times
         for _ in range(self.disc_iter):
@@ -86,7 +88,7 @@ class WGAN_clip(keras.Model):
                 real_pred = self.discriminator(real_sample, training=True)
                 fake_pred = self.discriminator(fake_sample, training=True)
 
-                discr_loss = self.discriminator.loss(real_pred, fake_pred)
+                discr_loss = self.discriminator.loss(fake_pred, real_pred)
 
             discr_grads = disc_tape.gradient(
                 discr_loss, self.discriminator.trainable_variables
