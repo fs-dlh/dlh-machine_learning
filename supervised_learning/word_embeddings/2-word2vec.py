@@ -29,8 +29,9 @@ def word2vec_model(sentences,
         Word2Vec: The trained Word2Vec model.
     """
     sg = 0 if cbow else 1
-    np = gensim.models.word2vec.np
+    gensim.models.word2vec.np.random.seed(seed)
     model = gensim.models.Word2Vec(
+        sentences=sentences,
         vector_size=vector_size,
         min_count=min_count,
         window=window,
@@ -40,12 +41,5 @@ def word2vec_model(sentences,
         seed=seed,
         workers=workers
     )
-    model.build_vocab(sentences)
-    np.random.seed(seed)
 
-    model.train(
-        sentences,
-        total_examples=model.corpus_count,
-        epochs=epochs,
-    )
     return model
