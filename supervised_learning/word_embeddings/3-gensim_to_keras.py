@@ -15,6 +15,7 @@ def gensim_to_keras(model):
         keras.layers.Embedding: layer initialized with Word2Vec weights
     """
     model.wv.sort_by_descending_frequency()
+    print("SENTINEL-G2K", model.wv.index_to_key[:3])
     embedding_matrix = model.wv.vectors
     vocab_size, embedding_dim = embedding_matrix.shape
 
