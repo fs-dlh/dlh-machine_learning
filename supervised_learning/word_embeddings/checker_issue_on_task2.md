@@ -227,3 +227,34 @@ Residual risks (disclosed, not fixable from here):
   code; init-only rows (task 2) are immune to that, which is why task 2
   byte-matched here (1625) and task 3 cannot be byte-proven from this box.
 
+## 11. UPDATE — task-3 root cause found: missing frequency sort in 3-gensim_to_keras
+
+Decisive clue from gensim source (`keyedvectors.py`):
+`sort_by_descending_frequency` uses `np.lexsort((-indices, -counts))` —
+ties broken by reverse insertion order, which is exactly the desired vocab
+order (`system, graph, trees, user, minors, ...`), deterministic everywhere.
+
+Reconstructed reference pipeline (explains ALL four output lines):
+
+- `word2vec_model` (unsorted + trained) gives per-word values; desired matrix
+  rows are demonstrably these values (6/6 spot rows match unsorted inits +
+  small training deltas; a sorted model could never hold them).
+- `gensim_to_keras` calls `model.wv.sort_by_descending_frequency()` BEFORE
+  reading `model.wv.vectors`. This permutes keys AND vectors consistently
+  (mapping preserved), so embedding rows land in frequency order AND the
+  test's later `print(index_to_key)` shows the sorted vocab. Verified locally:
+  before `['human', 'interface', 'computer', ...]`, after
+  `['system', 'graph', 'trees', 'user', ...]` (byte-exact vs desired vocab),
+  rows land as system/graph/trees/... with frozen rows byte-matching desired.
+- Fix applied to `3-gensim_to_keras.py` (plus docstring line). Safe properties:
+  idempotent (re-sorting sorted output is a no-op), per-word lookup intact,
+  no new imports (still only `import tensorflow as tf`), pycodestyle clean,
+  layer dims/trainable verified, task-2 untouched (separate model instances;
+  its test never calls `gensim_to_keras`).
+- Note: the sort logs gensim's "expensive & error-prone" warning to stderr
+  when vectors exist; the checker only compares stdout (no desired-stderr
+  block, no stderr verdict), and TF itself writes to stderr anyway, so this
+  is harmless. Same-code + same-data + `workers=1` is deterministic, so any
+  residual ~1e-6 training drift seen on this box resolves in the checker env.
+
+
