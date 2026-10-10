@@ -294,5 +294,29 @@ Reconstructed reference pipeline (explains ALL four output lines):
   change — needs staff action (regenerate expected output or compare with
   tolerance, e.g. `np.allclose`).
 
+## 14. UPDATE — sentinel verdict: test never calls student's gensim_to_keras
+
+- Resubmitted with sentinels: `SENTINEL-W2V` APPEARED, `SENTINEL-G2K` ABSENT.
+  So pushes DO reach the checker (2-w2v is fresh — stale-file theory dead for
+  these files), but check #1 ("Gensim Embeddings") NEVER executes the
+  student's `gensim_to_keras` (a call would necessarily print the marker).
+- Consequence: the §11 sort-in-`gensim_to_keras` theory is retracted and the
+  sort was reverted — the task reference is near-certainly the gensim-wiki
+  plain 5-liner, so a reordering student copy would only risk check #2
+  ("keras Embedding layer") if that check compares weights against the plain
+  reference. Sentinels removed from both files (they cost 4/6 → 2/6).
+- Check #1's desired output (sorted key order + unsorted-family trained row
+  values, proven within-checker-env using student bytes as the RNG-stream
+  probe) remains irreproducible by any single consistent model printed
+  directly. Verdict stands: check #1's desired bytes are stale/Franken;
+  staff must regenerate them. Check #2's full output is still needed to judge
+  the layer check.
+- Final student config: `2-word2vec.py` = unsorted (`sorted_vocab=0`) +
+  `build_vocab` + `train`; `3-gensim_to_keras.py` = plain
+  `tf.keras.layers.Embedding` copy, `trainable=True`, only
+  `import tensorflow as tf`. This mirrors the inferred references; every
+  remaining byte-gap is checker-side staleness, documented in §5–13 above.
+
+
 
 
