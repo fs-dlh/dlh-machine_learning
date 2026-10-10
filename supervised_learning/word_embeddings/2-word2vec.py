@@ -38,14 +38,8 @@ def word2vec_model(sentences,
         epochs=epochs,
         seed=seed,
         workers=workers,
+        sorted_vocab=0,
     )
     model.build_vocab(sentences)
-
-    model.train(
-        sentences,
-        total_examples=model.corpus_count,
-        total_words=model.corpus_total_words,
-        epochs=model.epochs,
-    )
 
     return model
