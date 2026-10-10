@@ -28,23 +28,24 @@ def word2vec_model(sentences,
     Returns:
         Word2Vec: The trained Word2Vec model.
     """
-    sg = 0 if cbow else 1
+
     model = gensim.models.Word2Vec(
         vector_size=vector_size,
         min_count=min_count,
         window=window,
         negative=negative,
-        sg=sg,
+        sg=0 if cbow else 1,
         epochs=epochs,
         seed=seed,
-        workers=workers
+        workers=workers,
     )
     model.build_vocab(sentences)
-    gensim.models.word2vec.np.random.seed(seed)
+
     model.train(
         sentences,
         total_examples=model.corpus_count,
-        epochs=epochs,
+        total_words=model.corpus_total_words,
+        epochs=model.epochs,
     )
 
     return model
