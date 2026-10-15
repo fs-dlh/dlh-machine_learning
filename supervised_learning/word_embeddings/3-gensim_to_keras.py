@@ -14,8 +14,7 @@ def gensim_to_keras(model):
     Returns:
         keras.layers.Embedding: layer initialized with Word2Vec weights
 
-    model.wv.sort_by_descending_frequency() """"
-
+    model.wv.sort_by_descending_frequency() """
 
     return tf.keras.layers.Embedding(
         input_dim=model.wv.vectors.shape[0],
