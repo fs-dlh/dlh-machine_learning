@@ -13,14 +13,13 @@ def gensim_to_keras(model):
 
     Returns:
         keras.layers.Embedding: layer initialized with Word2Vec weights
-    """
-    model.wv.sort_by_descending_frequency()
-    embedding_matrix = model.wv.vectors
-    vocab_size, embedding_dim = embedding_matrix.shape
+
+    model.wv.sort_by_descending_frequency() """"
+
 
     return tf.keras.layers.Embedding(
-        input_dim=vocab_size,
-        output_dim=embedding_dim,
-        weights=[embedding_matrix],
+        input_dim=model.wv.vectors.shape[0],
+        output_dim=model.wv.vectors.shape[1],
+        weights=[model.wv.vectors],
         trainable=True,
     )
