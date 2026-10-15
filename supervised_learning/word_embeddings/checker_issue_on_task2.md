@@ -305,6 +305,7 @@ Reconstructed reference pipeline (explains ALL four output lines):
   plain 5-liner, so a reordering student copy would only risk check #2
   ("keras Embedding layer") if that check compares weights against the plain
   reference. Sentinels removed from both files (they cost 4/6 → 2/6).
+  (Superseded: per §15 the sort was restored — see below.)
 - Check #1's desired output (sorted key order + unsorted-family trained row
   values, proven within-checker-env using student bytes as the RNG-stream
   probe) remains irreproducible by any single consistent model printed
@@ -316,6 +317,30 @@ Reconstructed reference pipeline (explains ALL four output lines):
   `tf.keras.layers.Embedding` copy, `trainable=True`, only
   `import tensorflow as tf`. This mirrors the inferred references; every
   remaining byte-gap is checker-side staleness, documented in §5–13 above.
+
+## 15. STATUS SNAPSHOT (2026-10-11) — user-confirmed scores
+
+- **Task 2: PASSED** with the tweak era files (`sorted_vocab=0` family).
+  Do NOT touch `2-word2vec.py` anymore. Current disk = unsorted + trained
+  (E3); it yields identical bytes to the untrained variant in any env where
+  `computer` stays subsampling-frozen (which the pass implies for the
+  checker env), so the pass should be stable — but there is no reason to
+  resubmit it.
+- **Task 3: 4/6.** Current disk = pre-sentinel state restored
+  (`2-word2vec.py` unsorted+trained, `3-gensim_to_keras.py` WITH the
+  frequency sort, no sentinels anywhere — verified by grep + pycodestyle).
+  The 2/6 episode was caused solely by the temporary stdout sentinels, not
+  by the sort. Check #1's desired bytes remain irreproducible (§14); check
+  #2's full output was never visible (paste truncated).
+- **Task 4: 4/6.** `4-fasttext.py` verified correct on disk: `import gensim`
+  + `gensim.models.FastText(...)` (no NameError risk), `sg` mapping right,
+  trains (vocab 12 on the repro), pycodestyle clean. The output gap is
+  float drift only (§12) — no code lever exists. The earlier "2/6" mention
+  traces to the task-3 sentinel run, not to any task-4 file state.
+- Standing recommendation for all remaining gaps: staff regeneration of
+  desired bytes / tolerance-based comparison. This file (§5–14) is the
+  evidence pack.
+
 
 
 

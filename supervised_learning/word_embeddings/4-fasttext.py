@@ -8,6 +8,7 @@ def fasttext_model(sentences, vector_size=100, min_count=5, negative=5,
     """  Creates, builds and trains a genism fastText model. """
 
     model = gensim.models.FastText(
+        sentences=sentences,
         vector_size=vector_size,
         min_count=min_count,
         negative=negative,
@@ -18,9 +19,9 @@ def fasttext_model(sentences, vector_size=100, min_count=5, negative=5,
         workers=workers,
     )
 
-    model.build_vocab(sentences)
+    model.build_vocab(corpus_iterable=sentences)
     model.train(
-        sentences,
+        corpus_iterable=sentences,
         total_examples=len(sentences),
         epochs=epochs,
     )
