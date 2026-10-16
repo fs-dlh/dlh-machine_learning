@@ -1,39 +1,57 @@
 #!/usr/bin/env python3
-""" Self-attention layer for machine translation. """
+""" RNN Decoder module for machine translation. """
+
 import tensorflow as tf
 
+SelfAttention = __import__('1-self_attention').SelfAttention
 
-class SelfAttention(tf.keras.layers.Layer):
-    """ Calculate attention for machine translation. """
 
-    def __init__(self, units):
-        """Initialize the attention layer.
+class RNNDecoder(tf.keras.layers.Layer):
+    """ Decode sequences using an embedding, attention, and a GRU layer. """
+
+    def __init__(self, vocab, embedding, units, batch):
+        """ Initialize the RNN decoder.
 
         Args:
-            units : Number of hidden units in the alignment model.
+            vocab : Size of the output vocabulary.
+            embedding : Dimensionality of the embedding vector.
+            units : Number of hidden units in the GRU cell.
+            batch : Batch size.
         """
-        super(SelfAttention, self).__init__()
-        self.W = tf.keras.layers.Dense(units)
-        self.U = tf.keras.layers.Dense(units)
-        self.V = tf.keras.layers.Dense(1)
+        super(RNNDecoder, self).__init__()
+        self.batch = batch
+        self.units = units
+        self.embedding = tf.keras.layers.Embedding(vocab, embedding)
+        self.gru = tf.keras.layers.GRU(
+            units,
+            return_sequences=True,
+            return_state=True,
+            recurrent_initializer='glorot_uniform'
+        )
+        self.F = tf.keras.layers.Dense(vocab)
+        self.attention = SelfAttention(units)
 
-    def call(self, s_prev, hidden_states):
-        """ Compute the context vector and attention weights.
+    def call(self, x, s_prev, hidden_states):
+        """ Decode a single step.
 
         Args:
-            s_prev: Tensor of shape (batch, units) containing the previous
-                decoder hidden state.
-            hidden_states: Tensor of shape (batch, input_seq_len, units)
-                containing the encoder outputs.
+            x : Tensor of shape (batch, 1) with previous target
+                word indices.
+            s_prev : Tensor of shape (batch, units) with the
+                previous decoder hidden state.
+            hidden_states : Tensor of shape
+                (batch, input_seq_len, units) with encoder outputs.
 
         Returns:
-            context: Tensor of shape (batch, units) containing the context
-                vector for the decoder.
-            weights: Tensor of shape (batch, input_seq_len, 1) containing
-                the attention weights.
+            y : Tensor of shape (batch, vocab) with output logits.
+            s : Tensor of shape (batch, units) with the new
+                decoder hidden state.
         """
-        s_prev = tf.expand_dims(s_prev, 1)
-        score = self.V(tf.nn.tanh(self.W(s_prev) + self.U(hidden_states)))
-        weights = tf.nn.softmax(score, axis=1)
-        context = tf.reduce_sum(weights * hidden_states, axis=1)
-        return context, weights
+        x = self.embedding(x)
+        context, _ = self.attention(s_prev, hidden_states)
+        context = tf.expand_dims(context, 1)
+        x = tf.concat([context, x], axis=-1)
+        outputs, s = self.gru(x, initial_state=s_prev)
+        y = self.F(outputs)
+        y = tf.squeeze(y, axis=1)
+        return y, s
